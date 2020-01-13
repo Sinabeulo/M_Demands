@@ -37,7 +37,7 @@ namespace DACLayer_DF.Querys
                 return;
             }
 
-            connectionString = $@"Data Source={dataSource};Initial Catalog={initialCatalog};User ID={userID};Password={password}";
+            connectionString = $@"Data Source={dataSource};Initial Catalog={initialCatalog};User ID={userID};Password={password};";
             connectionStringOK = true;
         }
 

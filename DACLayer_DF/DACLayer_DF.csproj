@@ -49,7 +49,6 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Connection\ConnectionInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Querys\EmptyQuery.cs" />
     <Compile Include="Querys\QueryManager.cs" />
   </ItemGroup>
   <ItemGroup />

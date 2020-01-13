@@ -11,7 +11,14 @@ namespace MVVM
     { 
         public static ObservableCollection<T> ToObservableCollection<T>(this IList<T> items)
         {
-            return new ObservableCollection<T>(items);
+            try
+            {
+                return new ObservableCollection<T>(items);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public static string ToStringForFileWrite(this IList<string> lines)

@@ -2,9 +2,8 @@
 
 namespace DACLayer.Connection
 {
-    public class ConnectionInfo //: INotifyPropertyChanged
+    public class ConnectionInfo : INotifyPropertyChanged
     {
-        /*
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void SetProperty<T>(ref T prop, string propName, T value)
@@ -16,6 +15,7 @@ namespace DACLayer.Connection
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
         }
+        /*
 
         private string _dataSource;
         private string _initialCatalog;
@@ -63,6 +63,7 @@ namespace DACLayer.Connection
             set => SetProperty(ref _title, nameof(Title), value);
         }
         */
+        private string _password;
 
         /// <summary>
         /// DB 주소
@@ -79,7 +80,11 @@ namespace DACLayer.Connection
         /// <summary>
         /// 비밀번호
         /// </summary>
-        public string Password { get; set; }
+        public string Password
+        {
+            get => _password;
+            set => SetProperty(ref _password, nameof(Password), value);
+        }
         /// <summary>
         /// 타이틀 명
         /// </summary>

@@ -159,6 +159,7 @@ namespace MVVM
 
                 if (CheckStorageFolderSetting() == false) return null;
 
+                await storageFolder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
                 StorageFile storage = await storageFolder.GetFileAsync(fileName);
                 if (storage == null)
                 {

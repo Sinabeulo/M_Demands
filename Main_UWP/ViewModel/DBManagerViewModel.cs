@@ -136,6 +136,8 @@ namespace Main_UWP.ViewModel
             {
                 CommonFeature.Feature.ShowMessageAsync("Connection Failed");
             }
+
+            SelectedServer.Password = string.Empty;
             // 다음 코드...
         }
 
@@ -212,7 +214,11 @@ namespace Main_UWP.ViewModel
         /// <returns></returns>
         private IList<ConnectionInfo> StringToConnectionInfoList(string strData)
         {
-            List<string> lineData = strData.SplitToList('\n');
+            List<string> lineData = strData?.SplitToList('\n');
+            if(lineData == null || lineData.Count == 0)
+            {
+                return null;
+            }
 
             IList<ConnectionInfo> infos = lineData.Where(w => w != "").Select(s => s.Split('#')).Select(s1 => new ConnectionInfo()
             {
