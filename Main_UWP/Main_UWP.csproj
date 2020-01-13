@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -127,7 +127,6 @@
     <Compile Include="ViewModel\FileIOTestViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Test1_ViewModel.cs" />
-    <Compile Include="ViewModel\Test2_ViewModel.cs" />
     <Compile Include="View\DBManagerView.xaml.cs">
       <DependentUpon>DBManagerView.xaml</DependentUpon>
     </Compile>
@@ -139,9 +138,6 @@
     </Compile>
     <Compile Include="View\Test1_View.xaml.cs">
       <DependentUpon>Test1_View.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Test2_View.xaml.cs">
-      <DependentUpon>Test2_View.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -182,10 +178,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Test1_View.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\Test2_View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

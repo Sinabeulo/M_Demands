@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-//using System.Transactions;
 using System.Data;
 using Dapper;
 using System.Threading.Tasks;
@@ -30,7 +29,8 @@ namespace DACLayer.Querys
                 return;
             }
 
-            connectionString = $@"Data Source={dataSource};Initial Catalog={initialCatalog};User ID={userID};Password={password}";
+            //connectionString = $@"Data Source={dataSource};Initial Catalog={initialCatalog};User ID={userID};Password={password};";
+            connectionString = $@"Data Source={dataSource};Initial Catalog={initialCatalog}; User Id={userID}; Password={password}";
             connectionStringOK = true;
         }
 
@@ -48,7 +48,7 @@ namespace DACLayer.Querys
                 {
                     connection.Open();
 
-                    var results = connection.Query<TblConnection>("SELECT 'O' AS ConStatus").Select(obj => new TblConnection()
+                    var results = connection.Query<TblConnection>("SELECT 'O' AS resultStatus").Select(obj => new TblConnection()
                     {
                         resultStatus = obj.resultStatus
                     }).FirstOrDefault();
