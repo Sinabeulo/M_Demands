@@ -33,7 +33,7 @@ namespace Main_Form
         {
             /*
             // 프로시저 검색
-            //using (IDbConnection connection = new SqlConnection($@"Data Source=192.16.1.104\MES_TEST, 10004;Initial Catalog=CAMMSYS_MES_TEST;User ID={id};Password={password}"))
+            //using (IDbConnection connection = new SqlConnection($@"Data Source=;Initial Catalog=;User ID={id};Password={password}"))
             QueryManager queryManager = new QueryManager("datasource","initial","id","pw");
             //var result1 = queryManager.EmptyQueryToStringList("SELECT OBJECT_NAME(object_id) AS Text FROM sys.procedures ORDER BY OBJECT_NAME(object_id)");
             //var result1 = queryManager.EmptyQuery("sp_helptext sp_MATR_01_001");
