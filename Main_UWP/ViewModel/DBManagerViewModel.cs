@@ -1,13 +1,11 @@
-﻿//using DACLayer.Connection;
-//using Main_UWP.Model;
-using DACLayer.Connection;
+﻿using DACLayer.Connection;
 using DACLayer.Querys;
 using MVVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Windows.Input;
 
 namespace Main_UWP.ViewModel
@@ -22,6 +20,7 @@ namespace Main_UWP.ViewModel
         private string _folderPath;
         private bool _isInputEnabled;
         private bool _canSave;
+        private HttpClient client;
 
         private readonly string fileName = "ServList.txt";
         #endregion
@@ -86,6 +85,10 @@ namespace Main_UWP.ViewModel
         /// 폴더 로드 커맨드
         /// </summary>
         public ICommand FolderLoadCommand { get; set; }
+        /// <summary>
+        /// 테스트 커맨드
+        /// </summary>
+        public ICommand ApiGetCommand { get; set; }
         #endregion
 
         public DBManagerViewModel()
@@ -99,6 +102,9 @@ namespace Main_UWP.ViewModel
             DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
             ConnectCommand = new RelayCommand(ExecuteConnectCommand);
             FolderLoadCommand = new RelayCommand(ExecuteFolderLoadCommand);
+            ApiGetCommand = new RelayCommand(GetConnectionListAsync);
+
+            InitializeHttpClient();
 
             PropertyChanged += DBManagerViewModel_PropertyChanged;
         }
@@ -229,6 +235,43 @@ namespace Main_UWP.ViewModel
             }).ToList();
 
             return infos;
+        }
+
+        /// <summary>
+        /// GET 테스트
+        /// </summary>
+        private async void GetConnectionListAsync()
+        {
+            try
+            {
+                var response = await client.GetAsync("api/connection");
+                response.EnsureSuccessStatusCode(); // 오류 코드를 던집니다.
+
+                //var connectList = await response.Content.ReadAsAsync<IEnumerable<ConnectionInfo>>();
+                var connectList = await response.Content.ReadAsStringAsync();
+                // 데이터 가져와서 정리해야하는데.. 오류남
+
+            }
+            catch (Exception e)
+            {
+                
+            }
+        }
+
+        /// <summary>
+        /// Web Api 와 통신할 HttpClient 초기화
+        /// </summary>
+        private void InitializeHttpClient()
+        {
+            //client = client == null ? new HttpClient() : client;
+            if (client == null)
+            {
+                client = new HttpClient();
+            }
+
+            client.BaseAddress = new Uri("https://localhost:44373");
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
         }
         #endregion
     }

@@ -19,6 +19,7 @@ namespace TodoApi.Controllers
         {
             _context = context;
 
+            // 기본 데이터 설정
             if(_context.TodoItems.Count() == 0)
             {
                 _context.TodoItems.Add(new TodoItem { Name = "Item1" });
