@@ -30,6 +30,9 @@ namespace TodoApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<TodoContext>(opt =>
                 opt.UseInMemoryDatabase("TodoList"));
+
+            services.AddMvc();
+
             //services.AddControllers()
         }
 

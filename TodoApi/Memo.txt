@@ -1,0 +1,10 @@
+﻿MS 자습서 'WebApi 만들기' 라는 문서 2종류를 참조해서 예제 만듦.
+
+console / vs-code 로 만드는 방법 
+https://docs.microsoft.com/ko-kr/learn/modules/build-web-api-net-core/
+
+하나는 3.1 버전으로 만드는 방법 (이건 버전 업 될 때마다 바뀌는 듯)
+https://docs.microsoft.com/ko-kr/aspnet/core/tutorials/first-web-api?view=aspnetcore-3.1&tabs=visual-studio
+
+아래 거는 아직 안봤는데 
+https://docs.microsoft.com/ko-kr/aspnet/web-api/

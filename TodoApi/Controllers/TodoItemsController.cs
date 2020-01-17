@@ -18,6 +18,12 @@ namespace TodoApi.Controllers
         public TodoItemsController(TodoContext context)
         {
             _context = context;
+
+            if(_context.TodoItems.Count() == 0)
+            {
+                _context.TodoItems.Add(new TodoItem { Name = "Item1" });
+                _context.SaveChanges();
+            }
         }
 
         // GET: api/TodoItems
