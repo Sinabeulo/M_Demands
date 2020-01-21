@@ -1,0 +1,14 @@
+﻿
+WebApi 접근 하기 위해 HttpClient 객체를 생성하려면 두가지 방법이 있다.
+ - System.Net.Http.HttpClient ;
+ - Windows.Web.Http.HttpClient ; // https://docs.microsoft.com/ko-kr/windows/uwp/networking/httpclient
+
+Winform으로 WebApi 호출하면 정상작동이지만 UWP는 'an error occurred while sending the request'라는 에러 발생
+
+찾아본 결과 
+app.xmanifest -> Private Networks (Client & Server) 를 활성화 하라는 말도 있었고
+app.xmanifest -> Private Networks (Client & Server) 를 활성화 하라는 말도 있었음.
+
+전자는 같은 에러가 발생.
+후자는 에러가 사라짐
+확인 차 둘다 비활성화 해보았지만 정상작동함.

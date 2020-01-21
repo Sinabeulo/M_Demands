@@ -14,13 +14,13 @@ namespace Main_UWP.ViewModel
     {
 
         #region Field
-        private IList<ConnectionInfo> _serverList;
-        private ConnectionInfo _selectedServer;
-        private ConnectionInfo _newServer;
+        private IList<ConnectionInfo> _connectionList;
+        private ConnectionInfo _selectedConnection;
+        private ConnectionInfo _newConnectionInfo;
         private string _folderPath;
-        private bool _isInputEnabled;
         private bool _canSave;
         private HttpClient client;
+        Windows.Web.Http.HttpClient httpClient;
 
         private readonly string fileName = "ServList.txt";
         #endregion
@@ -29,26 +29,26 @@ namespace Main_UWP.ViewModel
         /// <summary>
         /// 서버 리스트
         /// </summary>
-        public IList<ConnectionInfo> ServerList
+        public IList<ConnectionInfo> ConnectionList
         {
-            get => _serverList;
-            set => SetProperty(ref _serverList, nameof(ServerList), value);
+            get => _connectionList;
+            set => SetProperty(ref _connectionList, nameof(ConnectionList), value);
         }
         /// <summary>
         /// 선택된 서버
         /// </summary>
-        public ConnectionInfo SelectedServer
+        public ConnectionInfo SelectedConnection
         {
-            get => _selectedServer;
-            set => SetProperty(ref _selectedServer, nameof(SelectedServer), value);
+            get => _selectedConnection;
+            set => SetProperty(ref _selectedConnection, nameof(SelectedConnection), value);
         }
         /// <summary>
         /// 새로 입력된 서버
         /// </summary>
-        public ConnectionInfo NewServer
+        public ConnectionInfo NewConnectionInfo
         {
-            get => _newServer;
-            set => SetProperty(ref _newServer, nameof(NewServer), value);
+            get => _newConnectionInfo;
+            set => SetProperty(ref _newConnectionInfo, nameof(NewConnectionInfo), value);
         }
         /// <summary>
         /// 서버 목록 파일의 폴더 경로
@@ -57,14 +57,6 @@ namespace Main_UWP.ViewModel
         {
             get => _folderPath;
             set => SetProperty(ref _folderPath, nameof(FolderPath), value);
-        }
-        /// <summary>
-        /// 입력 가능여부
-        /// </summary>
-        public bool IsInputEnabled
-        {
-            get => _isInputEnabled;
-            set => SetProperty(ref _isInputEnabled, nameof(IsInputEnabled), value);
         }
         /// <summary>
         /// 저장 가능여부
@@ -82,29 +74,31 @@ namespace Main_UWP.ViewModel
         /// </summary>
         public ICommand ConnectCommand { get; set; }
         /// <summary>
-        /// 폴더 로드 커맨드
-        /// </summary>
-        public ICommand FolderLoadCommand { get; set; }
-        /// <summary>
         /// 테스트 커맨드
         /// </summary>
         public ICommand ApiGetCommand { get; set; }
+        /// <summary>
+        /// [GET] 접속리스트 조회
+        /// </summary>
+        public ICommand GetConnectionListCommand { get; set; }
         #endregion
 
         public DBManagerViewModel()
         {
-            CanSave = IsInputEnabled = false;
+            CanSave = false;
 
-            ServerList = new System.Collections.ObjectModel.ObservableCollection<ConnectionInfo>();
+            ConnectionList = new System.Collections.ObjectModel.ObservableCollection<ConnectionInfo>();
 
             AddCommand = new RelayCommand(ExecuteAddCommand);
             SaveCommand = new RelayCommand(ExecuteSaveCommand);
             DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
             ConnectCommand = new RelayCommand(ExecuteConnectCommand);
-            FolderLoadCommand = new RelayCommand(ExecuteFolderLoadCommand);
             ApiGetCommand = new RelayCommand(GetConnectionListAsync);
+            GetConnectionListCommand = new RelayCommand(ExecuteGetConnectionListCommand);
 
             InitializeHttpClient();
+
+            NewConnectionInfo = new ConnectionInfo();
 
             PropertyChanged += DBManagerViewModel_PropertyChanged;
         }
@@ -122,28 +116,16 @@ namespace Main_UWP.ViewModel
         }
 
         #region Execute
-        /// <summary>
-        /// 서버목록 폴더 경로 설정 및 파일 생성
-        /// </summary>
-        private async void ExecuteFolderLoadCommand()
-        {
-            await FileManager.SingleFileManager.OpenFolderPicker();
-
-            FolderPath = await FileManager.SingleFileManager.GetStorageDirectory();
-
-            ReadServerListAysnc();
-        }
-
         private async void ExecuteConnectCommand()
         {
-            QueryManager queryManager = new QueryManager(SelectedServer.DataSource,SelectedServer.InitialCatalog,SelectedServer.UserID,SelectedServer.Password);
+            QueryManager queryManager = new QueryManager(SelectedConnection.DataSource,SelectedConnection.InitialCatalog,SelectedConnection.UserID,SelectedConnection.Password);
             bool result = await queryManager.ConnectionTest();
             if(result == false)
             {
                 CommonFeature.Feature.ShowMessageAsync("Connection Failed");
             }
 
-            SelectedServer.Password = string.Empty;
+            SelectedConnection.Password = string.Empty;
             // 다음 코드...
         }
 
@@ -152,15 +134,15 @@ namespace Main_UWP.ViewModel
         /// </summary>
         private void ExecuteDeleteCommand()
         {
-            if(SelectedServer == null)
+            if(SelectedConnection == null)
             {
                 //선택된 아이템 없음.
                 CommonFeature.Feature.ShowMessageAsync("There is no selected item.");
                 return;
             }
 
-            ServerList.Remove(SelectedServer);
-            SelectedServer = null;
+            ConnectionList.Remove(SelectedConnection);
+            SelectedConnection = null;
 
             ExecuteSaveCommand();
         }
@@ -172,13 +154,13 @@ namespace Main_UWP.ViewModel
         {
             try
             {
-                if (NewServer != null)
+                if (NewConnectionInfo != null)
                 {
-                    ServerList.Add(NewServer);
-                    NewServer = null;
+                    ConnectionList.Add(NewConnectionInfo);
+                    NewConnectionInfo = null;
                 }
 
-                var saveList = ServerList.Select(s => s.ToString()).ToList();
+                var saveList = ConnectionList.Select(s => s.ToString()).ToList();
 
                 await FileManager.SingleFileManager.FileWriteAsync(fileName, saveList, FileManager.ReadWriteWay.Buffer);
 
@@ -196,9 +178,44 @@ namespace Main_UWP.ViewModel
         /// </summary>
         private void ExecuteAddCommand()
         {
-            NewServer = new ConnectionInfo();
-            //ServerList.Add(EditModel);
-            CanSave = IsInputEnabled = true;
+            //NewConnectionInfo = new ConnectionInfo();
+            if(string.IsNullOrEmpty(NewConnectionInfo.DataSource) || string.IsNullOrEmpty(NewConnectionInfo.InitialCatalog) || 
+                string.IsNullOrEmpty(NewConnectionInfo.UserID) || string.IsNullOrEmpty(NewConnectionInfo.Title))
+            {
+                CommonFeature.Feature.ShowMessage("전부 입력되지 않았습니다.");
+                return;
+            }
+
+            ConnectionList.Add(NewConnectionInfo);
+            NewConnectionInfo = null;
+            CanSave = true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private async void ExecuteGetConnectionListCommand()
+        {
+            try
+            {
+                var response = await client.GetAsync("api/List");
+                response.EnsureSuccessStatusCode(); // 오류 코드를 던집니다.
+
+                var connectList = await response.Content.ReadAsStringAsync();
+
+
+                //Uri requestUri = new Uri("https://localhost:44373/api/list");
+                //Windows.Web.Http.HttpResponseMessage httpResponse = new Windows.Web.Http.HttpResponseMessage();
+
+                //httpResponse = await httpClient.GetAsync(requestUri);
+                //httpResponse.EnsureSuccessStatusCode();
+                //var results = await httpResponse.Content.ReadAsStringAsync();
+
+            }
+            catch (Exception e)
+            {
+                CommonFeature.Feature.ShowMessage(e.Message);
+            }
         }
         #endregion
 
@@ -210,7 +227,7 @@ namespace Main_UWP.ViewModel
         {
             string servDataString =  await FileManager.SingleFileManager.FileReadAsync(fileName, FileManager.ReadWriteWay.Buffer);
 
-            ServerList = StringToConnectionInfoList(servDataString).ToObservableCollection();
+            ConnectionList = StringToConnectionInfoList(servDataString).ToObservableCollection();
         }
 
         /// <summary>
@@ -263,7 +280,6 @@ namespace Main_UWP.ViewModel
         /// </summary>
         private void InitializeHttpClient()
         {
-            //client = client == null ? new HttpClient() : client;
             if (client == null)
             {
                 client = new HttpClient();
@@ -272,6 +288,8 @@ namespace Main_UWP.ViewModel
             client.BaseAddress = new Uri("https://localhost:44373");
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
+            //httpClient = new Windows.Web.Http.HttpClient();
+
         }
         #endregion
     }
