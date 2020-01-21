@@ -14,7 +14,7 @@
         <viewmodel:DBManagerViewModel/>
     </UserControl.DataContext>
 
-    <Grid>
+    <Grid Background="LightGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
@@ -38,17 +38,13 @@
             <TextBlock Grid.Column="0" Grid.Row="3" Text="Title" />
 
             <TextBox Grid.Column="1" Grid.Row="0" Height="30" 
-                     IsEnabled="{Binding IsInputEnabled}"
-                     Text="{Binding NewServer.DataSource, Mode=TwoWay}"/>
+                     Text="{Binding NewConnectionInfo.DataSource, Mode=TwoWay}"/>
             <TextBox Grid.Column="1" Grid.Row="1" Height="30" 
-                     IsEnabled="{Binding IsInputEnabled}"
-                     Text="{Binding NewServer.InitialCatalog, Mode=TwoWay}"/>
+                     Text="{Binding NewConnectionInfo.InitialCatalog, Mode=TwoWay}"/>
             <TextBox Grid.Column="1" Grid.Row="2" Height="30" 
-                     IsEnabled="{Binding IsInputEnabled}"
-                     Text="{Binding NewServer.UserID, Mode=TwoWay}"/>
+                     Text="{Binding NewConnectionInfo.UserID, Mode=TwoWay}"/>
             <TextBox Grid.Column="1" Grid.Row="3" Height="30" 
-                     IsEnabled="{Binding IsInputEnabled}"
-                     Text="{Binding NewServer.Title, Mode=TwoWay}"/>
+                     Text="{Binding NewConnectionInfo.Title, Mode=TwoWay}"/>
 
             <TextBox Grid.Column="2" Grid.Row="0" Height="30" 
                      IsEnabled="false"
@@ -63,9 +59,12 @@
                      IsEnabled="false"
                      Text="{Binding SelectedServer.Title}"/>
 
-            <Button Grid.Column="3" Grid.Row="0" Content="File Load"
-                    Command="{Binding FolderLoadCommand}"/>
+            <!--<Button Grid.Column="3" Grid.Row="0" Content="File Load"
+                    Command="{Binding FolderLoadCommand}"/>-->
 
+            <Button Grid.Column="3" Grid.Row="0" Content="Get SerLsit"
+                    Command="{Binding GetConnectionListCommand}"/>
+            
             <TextBlock Grid.Column="3" Grid.Row="1"
                        Text="{Binding FolderPath, Mode=TwoWay}"/>
 
@@ -85,8 +84,8 @@
                 <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
             <ListBox Margin="5"
-                     ItemsSource="{Binding ServerList, Mode=TwoWay}"
-                     SelectedItem="{Binding SelectedServer, Mode=TwoWay}">
+                     ItemsSource="{Binding ConnectionList, Mode=TwoWay}"
+                     SelectedItem="{Binding SelectedConnection, Mode=TwoWay}">
                 
             </ListBox>
 
