@@ -95,6 +95,7 @@
                 <Button Content="SaveServer" Command="{Binding SaveCommand}"
                         IsEnabled="{Binding CanSave}"/>
                 <Button Content="DeleteServer" Command="{Binding DeleteCommand}"/>
+                <Button Content="WebApiTestGet" Command="{Binding ApiGetCommand}"/>
             </StackPanel>
         </Grid>
     </Grid>
