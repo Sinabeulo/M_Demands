@@ -92,6 +92,11 @@ namespace DACService.Controllers
             if (conItem != null) 
                 conItem.Password = null;
 
+
+            if(_context.ConnectionList.Any(a=>a.DataSource == conItem.DataSource))
+            {
+                return BadRequest("이미 있음");
+            }
             _context.ConnectionList.Add(conItem);
             await _context.SaveChangesAsync();
 

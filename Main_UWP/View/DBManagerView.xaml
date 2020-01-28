@@ -5,6 +5,7 @@
     xmlns:local="using:Main_UWP.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:coverter="using:MVVM.Converter"
     xmlns:viewmodel="using:Main_UWP.ViewModel"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -14,12 +15,33 @@
         <viewmodel:DBManagerViewModel/>
     </UserControl.DataContext>
 
+    <UserControl.Resources>
+        <coverter:ReverseBoolConverter x:Key="ReverseBool"/>
+    </UserControl.Resources>
+
     <Grid Background="LightGray">
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
         <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="리스트 불러올 방법 :"/>
+            <RadioButton Grid.Column="1"
+                         Content="From File" 
+                         IsChecked="{Binding IsFromFile}"/>
+            <RadioButton Grid.Column="2"
+                         Content="From Server"
+                         IsChecked="{Binding IsFromFile,Converter={StaticResource ReverseBool}}"/>
+        </Grid>
+        
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="85"/>
                 <ColumnDefinition Width="*"/>
@@ -38,13 +60,13 @@
             <TextBlock Grid.Column="0" Grid.Row="3" Text="Title" />
 
             <TextBox Grid.Column="1" Grid.Row="0" Height="30" 
-                     Text="{Binding NewConnectionInfo.DataSource, Mode=TwoWay}"/>
+                     Text="{Binding NewConnectionModel.DataSource, Mode=TwoWay}"/>
             <TextBox Grid.Column="1" Grid.Row="1" Height="30" 
-                     Text="{Binding NewConnectionInfo.InitialCatalog, Mode=TwoWay}"/>
+                     Text="{Binding NewConnectionModel.InitialCatalog, Mode=TwoWay}"/>
             <TextBox Grid.Column="1" Grid.Row="2" Height="30" 
-                     Text="{Binding NewConnectionInfo.UserID, Mode=TwoWay}"/>
+                     Text="{Binding NewConnectionModel.UserID, Mode=TwoWay}"/>
             <TextBox Grid.Column="1" Grid.Row="3" Height="30" 
-                     Text="{Binding NewConnectionInfo.Title, Mode=TwoWay}"/>
+                     Text="{Binding NewConnectionModel.Title, Mode=TwoWay}"/>
 
             <TextBox Grid.Column="2" Grid.Row="0" Height="30" 
                      IsEnabled="false"
@@ -78,7 +100,7 @@
                     Command="{Binding ConnectCommand}"/>
 
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="150"/>

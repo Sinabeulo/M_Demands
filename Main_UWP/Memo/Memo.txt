@@ -7,7 +7,7 @@ Winform으로 WebApi 호출하면 정상작동이지만 UWP는 'an error occurre
 
 찾아본 결과 
 app.xmanifest -> Private Networks (Client & Server) 를 활성화 하라는 말도 있었고
-app.xmanifest -> Private Networks (Client & Server) 를 활성화 하라는 말도 있었음.
+app.xmanifest -> Shared User Certificates 를 활성화 하라는 말도 있었음. // https://stackoverflow.com/questions/53155598/local-uwp-client-to-local-asp-net-core-api-web-server-the-certificate-authorit
 
 전자는 같은 에러가 발생.
 후자는 에러가 사라짐

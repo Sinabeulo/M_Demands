@@ -1,6 +1,8 @@
-﻿using DACLayer.Connection;
-using DACLayer.Querys;
+﻿using Main_UWP.Model;
 using MVVM;
+using MVVM.Base;
+using MVVM.ItemType;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +16,15 @@ namespace Main_UWP.ViewModel
     {
 
         #region Field
-        private IList<ConnectionInfo> _connectionList;
-        private ConnectionInfo _selectedConnection;
-        private ConnectionInfo _newConnectionInfo;
+        private IList<ConnectionModel> _connectionList;
+        private ConnectionModel _selectedConnection;
+        private ConnectionModel _newConnectionModel;
         private string _folderPath;
         private bool _canSave;
+        private bool _isFromFile;
         private HttpClient client;
-        Windows.Web.Http.HttpClient httpClient;
+        private Windows.Web.Http.HttpClient httpClient;
+
 
         private readonly string fileName = "ServList.txt";
         #endregion
@@ -29,7 +33,7 @@ namespace Main_UWP.ViewModel
         /// <summary>
         /// 서버 리스트
         /// </summary>
-        public IList<ConnectionInfo> ConnectionList
+        public IList<ConnectionModel> ConnectionList
         {
             get => _connectionList;
             set => SetProperty(ref _connectionList, nameof(ConnectionList), value);
@@ -37,7 +41,7 @@ namespace Main_UWP.ViewModel
         /// <summary>
         /// 선택된 서버
         /// </summary>
-        public ConnectionInfo SelectedConnection
+        public ConnectionModel SelectedConnection
         {
             get => _selectedConnection;
             set => SetProperty(ref _selectedConnection, nameof(SelectedConnection), value);
@@ -45,10 +49,10 @@ namespace Main_UWP.ViewModel
         /// <summary>
         /// 새로 입력된 서버
         /// </summary>
-        public ConnectionInfo NewConnectionInfo
+        public ConnectionModel NewConnectionModel
         {
-            get => _newConnectionInfo;
-            set => SetProperty(ref _newConnectionInfo, nameof(NewConnectionInfo), value);
+            get => _newConnectionModel;
+            set => SetProperty(ref _newConnectionModel, nameof(NewConnectionModel), value);
         }
         /// <summary>
         /// 서버 목록 파일의 폴더 경로
@@ -65,6 +69,14 @@ namespace Main_UWP.ViewModel
         {
             get => _canSave;
             set => SetProperty(ref _canSave, nameof(CanSave), value);
+        }
+        /// <summary>
+        /// 파일에서 연결 목록 데이터 가져오는지 여부
+        /// </summary>
+        public bool IsFromFile
+        {
+            get => _isFromFile;
+            set => SetProperty(ref _isFromFile, nameof(IsFromFile), value);
         }
         #endregion
 
@@ -87,7 +99,7 @@ namespace Main_UWP.ViewModel
         {
             CanSave = false;
 
-            ConnectionList = new System.Collections.ObjectModel.ObservableCollection<ConnectionInfo>();
+            ConnectionList = new System.Collections.ObjectModel.ObservableCollection<ConnectionModel>();
 
             AddCommand = new RelayCommand(ExecuteAddCommand);
             SaveCommand = new RelayCommand(ExecuteSaveCommand);
@@ -98,7 +110,7 @@ namespace Main_UWP.ViewModel
 
             InitializeHttpClient();
 
-            NewConnectionInfo = new ConnectionInfo();
+            NewConnectionModel = new ConnectionModel();
 
             PropertyChanged += DBManagerViewModel_PropertyChanged;
         }
@@ -118,14 +130,14 @@ namespace Main_UWP.ViewModel
         #region Execute
         private async void ExecuteConnectCommand()
         {
-            QueryManager queryManager = new QueryManager(SelectedConnection.DataSource,SelectedConnection.InitialCatalog,SelectedConnection.UserID,SelectedConnection.Password);
-            bool result = await queryManager.ConnectionTest();
-            if(result == false)
-            {
-                CommonFeature.Feature.ShowMessageAsync("Connection Failed");
-            }
-
-            SelectedConnection.Password = string.Empty;
+            //QueryManager queryManager = new QueryManager(SelectedConnection.DataSource,SelectedConnection.InitialCatalog,SelectedConnection.UserID,SelectedConnection.Password);
+            //bool result = await queryManager.ConnectionTest();
+            //if(result == false)
+            //{
+            //    CommonFeature.Feature.ShowMessageAsync("Connection Failed");
+            //}
+            //
+            //SelectedConnection.Password = string.Empty;
             // 다음 코드...
         }
 
@@ -152,42 +164,45 @@ namespace Main_UWP.ViewModel
         /// </summary>
         private async void ExecuteSaveCommand()
         {
+            if(NewConnectionModel == null)
+            {
+                CommonFeature.Feature.ShowMessage("저장 할 항목 없음");
+                return;
+            }
             try
             {
-                if (NewConnectionInfo != null)
+                if (IsFromFile)
                 {
-                    ConnectionList.Add(NewConnectionInfo);
-                    NewConnectionInfo = null;
+                    SaveNewConnectionToFile();
                 }
+                else
+                {
+                    //List<ConnectionModel> saveList = ConnectionList.Where(w => w.EditType == EditType.New).ToList();
+                    ConnectionList.Where(w => w.EditType == EditType.New).ToList().ForEach(s => SaveNewConnectionToServer(s));
 
-                var saveList = ConnectionList.Select(s => s.ToString()).ToList();
-
-                await FileManager.SingleFileManager.FileWriteAsync(fileName, saveList, FileManager.ReadWriteWay.Buffer);
-
-                ReadServerListAysnc();
-                CanSave = false;
+                    //SaveNewConnectionToServer();
+                }
             }
-            catch(Exception e)
+            catch(Exception ex)
             {
-                CommonFeature.Feature.ShowMessageAsync(e.Message);
+                CommonFeature.Feature.ShowMessageAsync(ex.Message);
             }
         }
 
         /// <summary>
-        /// 새로운 서버 입력
+        /// 새로운 연결 입력
         /// </summary>
         private void ExecuteAddCommand()
         {
-            //NewConnectionInfo = new ConnectionInfo();
-            if(string.IsNullOrEmpty(NewConnectionInfo.DataSource) || string.IsNullOrEmpty(NewConnectionInfo.InitialCatalog) || 
-                string.IsNullOrEmpty(NewConnectionInfo.UserID) || string.IsNullOrEmpty(NewConnectionInfo.Title))
+            if(string.IsNullOrEmpty(NewConnectionModel.DataSource) || string.IsNullOrEmpty(NewConnectionModel.InitialCatalog) || 
+                string.IsNullOrEmpty(NewConnectionModel.UserID) || string.IsNullOrEmpty(NewConnectionModel.Title))
             {
                 CommonFeature.Feature.ShowMessage("전부 입력되지 않았습니다.");
                 return;
             }
 
-            ConnectionList.Add(NewConnectionInfo);
-            NewConnectionInfo = null;
+            NewConnectionModel.EditType = EditType.New;
+            ConnectionList.Add(NewConnectionModel);
             CanSave = true;
         }
 
@@ -227,15 +242,15 @@ namespace Main_UWP.ViewModel
         {
             string servDataString =  await FileManager.SingleFileManager.FileReadAsync(fileName, FileManager.ReadWriteWay.Buffer);
 
-            ConnectionList = StringToConnectionInfoList(servDataString).ToObservableCollection();
+            ConnectionList = StringToConnectionModelList(servDataString).ToObservableCollection();
         }
 
         /// <summary>
-        /// 문자열 데이터를 ConnectionInfo 리스트로 반환
+        /// 문자열 데이터를 ConnectionModel 리스트로 반환
         /// </summary>
         /// <param name="strData"></param>
         /// <returns></returns>
-        private IList<ConnectionInfo> StringToConnectionInfoList(string strData)
+        private IList<ConnectionModel> StringToConnectionModelList(string strData)
         {
             List<string> lineData = strData?.SplitToList('\n');
             if(lineData == null || lineData.Count == 0)
@@ -243,7 +258,7 @@ namespace Main_UWP.ViewModel
                 return null;
             }
 
-            IList<ConnectionInfo> infos = lineData.Where(w => w != "").Select(s => s.Split('#')).Select(s1 => new ConnectionInfo()
+            IList<ConnectionModel> infos = lineData.Where(w => w != "").Select(s => s.Split('#')).Select(s1 => new ConnectionModel()
             {
                 DataSource = s1[0],
                 InitialCatalog = s1[1],
@@ -264,7 +279,7 @@ namespace Main_UWP.ViewModel
                 var response = await client.GetAsync("api/connection");
                 response.EnsureSuccessStatusCode(); // 오류 코드를 던집니다.
 
-                //var connectList = await response.Content.ReadAsAsync<IEnumerable<ConnectionInfo>>();
+                //var connectList = await response.Content.ReadAsAsync<IEnumerable<ConnectionModel>>();
                 var connectList = await response.Content.ReadAsStringAsync();
                 // 데이터 가져와서 정리해야하는데.. 오류남
 
@@ -290,6 +305,82 @@ namespace Main_UWP.ViewModel
                 new MediaTypeWithQualityHeaderValue("application/json"));
             //httpClient = new Windows.Web.Http.HttpClient();
 
+        }
+
+        private async void SaveNewConnectionToFile()
+        {
+            //if (NewConnectionModel != null)
+            //{
+            //    ConnectionList.Add(NewConnectionModel);
+            //    NewConnectionModel = null;
+            //}
+
+            List<string> saveList = ConnectionList.Select(s => s.ToString()).ToList();
+
+            await FileManager.SingleFileManager.FileWriteAsync(fileName, saveList, FileManager.ReadWriteWay.Buffer);
+
+            ReadServerListAysnc();
+            CanSave = false;  
+        }
+
+        private async void SaveNewConnectionToServer(ConnectionModel newConnection)
+        {
+            //List<ConnectionModel> saveList = ConnectionList.Where(w => w.EditType == EditType.New).ToList();
+
+            //foreach(ConnectionModel info in saveList)
+            //{
+            //    // 데이터 Json Serialize
+            //    var convertedData = JsonConvert.SerializeObject(info);
+            //    StringContent content = new StringContent(convertedData);
+            //
+            //    // 요청
+            //    var response = await client.PostAsync("api/list", content);
+            //    response.EnsureSuccessStatusCode();
+            //
+            //
+            //    // 반환
+            //    var result = await response.Content.ReadAsStringAsync();
+            //    var tmp = JsonConvert.DeserializeObject<ConnectionModel>(result);
+            //}
+
+            var convertedData = JsonConvert.SerializeObject(newConnection);
+            StringContent content = new StringContent(convertedData, System.Text.Encoding.UTF8,"application/json");
+
+            // 요청
+            var response = await client.PostAsync("api/List", content);
+            response.EnsureSuccessStatusCode();
+
+
+            // 반환
+            var result = await response.Content.ReadAsStringAsync();
+            var tmp = JsonConvert.DeserializeObject<ConnectionModel>(result);
+
+            //ConnectionList = JsonConvert.DeserializeObject<ConnectionModel>(result);
+            //string convertedData = JsonConvert.SerializeObject(newConnection);
+            //StringContent content = new StringContent(convertedData);
+
+            //System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://localhost:44373/list");
+            //request.Method = "POST";
+            //request.ContentType = "application/json";
+            //request.Timeout = 30 * 1000;
+
+            //byte[] bytes = System.Text.Encoding.ASCII.GetBytes(convertedData);
+            //request.ContentLength = bytes.Length;
+
+            //using (System.IO.Stream reqStream = request.GetRequestStream())
+            //{
+            //    reqStream.Write(bytes, 0, bytes.Length);
+            //}
+
+            //string responseText = string.Empty;
+            //using(System.Net.WebResponse resp = request.GetResponse())
+            //{
+            //    System.IO.Stream respStream = resp.GetResponseStream();
+            //    using(System.IO.StreamReader sr = new System.IO.StreamReader(respStream))
+            //    {
+            //        responseText = sr.ReadToEnd();
+            //    }
+            //}
         }
         #endregion
     }
