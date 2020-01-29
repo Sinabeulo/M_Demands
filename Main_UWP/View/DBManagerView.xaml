@@ -12,112 +12,115 @@
     d:DesignWidth="400">
 
     <UserControl.DataContext>
-        <viewmodel:DBManagerViewModel/>
+        <viewmodel:DBManagerViewModel />
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <coverter:ReverseBoolConverter x:Key="ReverseBool"/>
+        <coverter:ReverseBoolConverter x:Key="ReverseBool" />
     </UserControl.Resources>
 
     <Grid Background="LightGray">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="140"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="140" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="리스트 불러올 방법 :"/>
+            <TextBlock Grid.Column="0" Text="리스트 불러올 방법 :" />
             <RadioButton Grid.Column="1"
-                         Content="From File" 
-                         IsChecked="{Binding IsFromFile}"/>
+                         Content="From File"
+                         IsChecked="{Binding IsFromFile, Mode=TwoWay}" />
             <RadioButton Grid.Column="2"
                          Content="From Server"
-                         IsChecked="{Binding IsFromFile,Converter={StaticResource ReverseBool}}"/>
+                         IsChecked="{Binding IsFromFile, Mode=TwoWay,Converter={StaticResource ReverseBool}}" />
         </Grid>
-        
+
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="85"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="85" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Data Source" />
             <TextBlock Grid.Column="0" Grid.Row="1" Text="InitialCatalog" />
             <TextBlock Grid.Column="0" Grid.Row="2" Text="UserId" />
             <TextBlock Grid.Column="0" Grid.Row="3" Text="Title" />
 
-            <TextBox Grid.Column="1" Grid.Row="0" Height="30" 
-                     Text="{Binding NewConnectionModel.DataSource, Mode=TwoWay}"/>
-            <TextBox Grid.Column="1" Grid.Row="1" Height="30" 
-                     Text="{Binding NewConnectionModel.InitialCatalog, Mode=TwoWay}"/>
-            <TextBox Grid.Column="1" Grid.Row="2" Height="30" 
-                     Text="{Binding NewConnectionModel.UserID, Mode=TwoWay}"/>
-            <TextBox Grid.Column="1" Grid.Row="3" Height="30" 
-                     Text="{Binding NewConnectionModel.Title, Mode=TwoWay}"/>
+            <TextBox Grid.Column="1" Grid.Row="0" Height="30"
+                     Text="{Binding NewConnectionModel.DataSource, Mode=TwoWay}" />
+            <TextBox Grid.Column="1" Grid.Row="1" Height="30"
+                     Text="{Binding NewConnectionModel.InitialCatalog, Mode=TwoWay}" />
+            <TextBox Grid.Column="1" Grid.Row="2" Height="30"
+                     Text="{Binding NewConnectionModel.UserID, Mode=TwoWay}" />
+            <TextBox Grid.Column="1" Grid.Row="3" Height="30"
+                     Text="{Binding NewConnectionModel.Title, Mode=TwoWay}" />
 
-            <TextBox Grid.Column="2" Grid.Row="0" Height="30" 
+            <TextBox Grid.Column="2" Grid.Row="0" Height="30"
                      IsEnabled="false"
-                     Text="{Binding SelectedServer.DataSource}"/>
-            <TextBox Grid.Column="2" Grid.Row="1" Height="30" 
+                     Text="{Binding SelectedConnection.DataSource}" />
+            <TextBox Grid.Column="2" Grid.Row="1" Height="30"
                      IsEnabled="false"
-                     Text="{Binding SelectedServer.InitialCatalog}"/>
-            <TextBox Grid.Column="2" Grid.Row="2" Height="30" 
+                     Text="{Binding SelectedConnection.InitialCatalog}" />
+            <TextBox Grid.Column="2" Grid.Row="2" Height="30"
                      IsEnabled="false"
-                     Text="{Binding SelectedServer.UserID}"/>
-            <TextBox Grid.Column="2" Grid.Row="3" Height="30" 
+                     Text="{Binding SelectedConnection.UserID}" />
+            <TextBox Grid.Column="2" Grid.Row="3" Height="30"
                      IsEnabled="false"
-                     Text="{Binding SelectedServer.Title}"/>
+                     Text="{Binding SelectedConnection.Title}" />
 
             <!--<Button Grid.Column="3" Grid.Row="0" Content="File Load"
-                    Command="{Binding FolderLoadCommand}"/>-->
+                    Command="{Binding FolderLoadCommand}" />-->
 
             <Button Grid.Column="3" Grid.Row="0" Content="Get SerLsit"
-                    Command="{Binding GetConnectionListCommand}"/>
-            
+                    Command="{Binding GetConnectionListCommand}" />
+
             <TextBlock Grid.Column="3" Grid.Row="1"
-                       Text="{Binding FolderPath, Mode=TwoWay}"/>
+                       Text="{Binding FolderPath, Mode=TwoWay}" />
 
             <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Horizontal">
                 <TextBlock Text="PW" Width="35" />
-                <TextBox Height="30" Width="100" 
-                         Text="{Binding SelectedServer.Password, Mode=TwoWay}"/>
+                <TextBox Height="30" Width="100"
+                         Text="{Binding SelectedConnection.Password, Mode=TwoWay}" />
             </StackPanel>
-            
-            <Button Grid.Column="3" Grid.Row="3" Content="Connect"
-                    Command="{Binding ConnectCommand}"/>
 
+            <Button Grid.Column="3" Grid.Row="3" Content="Connect"
+                    Command="{Binding ConnectCommand}" />
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250"/>
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="150" />
             </Grid.ColumnDefinitions>
             <ListBox Margin="5"
                      ItemsSource="{Binding ConnectionList, Mode=TwoWay}"
                      SelectedItem="{Binding SelectedConnection, Mode=TwoWay}">
-                
             </ListBox>
 
             <StackPanel Grid.Column="1">
-                <Button Content="AddServer" Command="{Binding AddCommand}"/>
+                <Button Content="AddServer" Command="{Binding AddCommand}" />
                 <Button Content="SaveServer" Command="{Binding SaveCommand}"
-                        IsEnabled="{Binding CanSave}"/>
-                <Button Content="DeleteServer" Command="{Binding DeleteCommand}"/>
-                <Button Content="WebApiTestGet" Command="{Binding ApiGetCommand}"/>
+                        IsEnabled="{Binding CanSave}" />
+                <Button Content="DeleteServer" Command="{Binding DeleteCommand}" />
+                <Button Content="WebApiTestGet" Command="{Binding ApiGetCommand}" />
             </StackPanel>
+
+            <ListBox Grid.Column="2" Margin="5"
+                     ItemsSource="{Binding CanConnectList, Mode=TwoWay}">
+            </ListBox>
         </Grid>
     </Grid>
 </UserControl>

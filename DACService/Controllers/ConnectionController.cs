@@ -92,14 +92,17 @@ namespace DACService.Controllers
 
             DBManager dBManager = new DBManager();
 
-            dBManager.DbConnection(conItem);
+            if(!dBManager.DbConnection(conItem))
+            {
+                return BadRequest("연결실패");
+            }
 
             //_context.Connections.Add(conItem);
             //await _context.SaveChangesAsync();
 
             
 
-            return null;//CreatedAtAction(nameof(GetConnections), new { id = conItem.Id }, conItem);
+            return CreatedAtAction(nameof(ReturnConnection), new { id = conItem.Id }, conItem);
         }
 
         //// DELETE: api/Connections/5
@@ -126,6 +129,19 @@ namespace DACService.Controllers
         private bool ConnectionItemExists(long id)
         {
             return _context.Connections.Any(e => e.Id == id);
+        }
+
+        private async Task<ConnectionModel> ReturnConnection(long id)
+        {
+            var conItem = await _context.Connections.FindAsync(id);
+
+            if (conItem == null)
+            {
+                return null;//NotFound();
+            }
+
+            return conItem;//Ok(conItem);
+            //return _context.Connections[id];
         }
     }
 }

@@ -28,6 +28,8 @@
             <Button Content="Test1_Page" Command="{Binding MoveTest1Page}" Margin="3"/>
             <Button Content="DB Connection" Command="{Binding DBConnectionCommand}" Margin="3"/>
             <Button Content="File Write Test" Command="{Binding FileWriteTestCommand}" Margin="3"/>
+            <Button Content="File Write Test" Command="{Binding FileWriteTestCommand}" Margin="3"
+                    IsEnabled="{Binding CanActiveFeature, Mode=TwoWay}"/>
         </StackPanel>
         
         <Grid Grid.Column="1" Grid.Row="1">
