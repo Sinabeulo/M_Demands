@@ -1,8 +1,13 @@
-﻿namespace DACService.Models
+﻿using MVVM.Base;
+using MVVM.ItemType;
+using Newtonsoft.Json;
+
+namespace Main_UWP.Model
 {
-    public class ConnectionModel
+    public class ConnectionModel : ModelBase
     {
-        public int Id { get; set; }
+        private string _password;
+
         /// <summary>
         /// DB 주소
         /// </summary>
@@ -18,15 +23,22 @@
         /// <summary>
         /// 비밀번호
         /// </summary>
-        public string Password { get; set; }
+        public string Password
+        {
+            get => _password;
+            set => SetProperty(ref _password, nameof(Password), value);
+        }
         /// <summary>
-        /// 제목
+        /// 타이틀 명
         /// </summary>
         public string Title { get; set; }
 
+        [JsonIgnore]
+        public EditType EditType { get; set; }
+
         public override string ToString()
         {
-            return $@"Data Source={DataSource};Initial Catalog={InitialCatalog}; User Id={UserID}; Password={Password}";
+            return $"{DataSource}#{InitialCatalog}#{UserID}#{Title}";
         }
     }
 }
