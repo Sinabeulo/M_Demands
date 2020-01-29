@@ -8,7 +8,8 @@ namespace Main_UWP.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public static bool CanUseFeatures = false;
+        //public static bool CanUseFeatures { get; set; } = false;
+        
 
         #region Field
 
@@ -38,17 +39,6 @@ namespace Main_UWP.ViewModel
             MoveTest1Page = new RelayCommand(ExecuteMoveTest1Page);
             DBConnectionCommand = new RelayCommand(ExecuteDBConnectionCommand);
             FileWriteTestCommand = new RelayCommand(ExecuteFileWriteTestCommand);
-            PropertyChanged += MainViewModel_PropertyChanged;
-        }
-
-        private void MainViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(CanUseFeatures):
-                    CanActiveFeature = CanUseFeatures;
-                    break;
-            }
         }
 
         private void ExecuteFileWriteTestCommand()

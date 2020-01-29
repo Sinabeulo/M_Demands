@@ -19,7 +19,7 @@ namespace Main_UWP.ViewModel
         #region Field
 
         private IList<ConnectionModel> _connectionList;
-        private IList<ConnectionModel> _canConnectedList;
+        private IList<ConnectionModel> _readyToConnectedList;
         private ConnectionModel _selectedConnection;
         private ConnectionModel _newConnectionModel;
         private string _folderPath;
@@ -27,6 +27,7 @@ namespace Main_UWP.ViewModel
         private bool _isFromFile;
         private HttpClient client;
         private Windows.Web.Http.HttpClient httpClient;
+        private MainViewModel _mainViewModel;
 
         private readonly string fileName = "ServList.txt";
 
@@ -46,10 +47,10 @@ namespace Main_UWP.ViewModel
         /// <summary>
         /// 연결가능한 목록
         /// </summary>
-        public IList<ConnectionModel> CanConnectList
+        public IList<ConnectionModel> ReadyToConnectList
         {
-            get => _canConnectedList;
-            set => SetProperty(ref _canConnectedList, nameof(CanConnectList), value);
+            get => _readyToConnectedList;
+            set => SetProperty(ref _readyToConnectedList, nameof(ReadyToConnectList), value);
         }
 
         /// <summary>
@@ -108,14 +109,14 @@ namespace Main_UWP.ViewModel
         public ICommand ConnectCommand { get; set; }
 
         /// <summary>
-        /// 테스트 커맨드
-        /// </summary>
-        public ICommand ApiGetCommand { get; set; }
-
-        /// <summary>
         /// [GET] 접속리스트 조회
         /// </summary>
         public ICommand GetConnectionListCommand { get; set; }
+
+        /// <summary>
+        /// 연결가능 목록 선택 변경 이벤트 커맨드
+        /// </summary>
+        public ICommand LoadedCommand { get; set; }
 
 
         #endregion Command
@@ -125,14 +126,14 @@ namespace Main_UWP.ViewModel
             CanSave = false;
 
             ConnectionList = new System.Collections.ObjectModel.ObservableCollection<ConnectionModel>();
-            CanConnectList = new System.Collections.ObjectModel.ObservableCollection<ConnectionModel>();
+            ReadyToConnectList = new System.Collections.ObjectModel.ObservableCollection<ConnectionModel>();
 
             AddCommand = new RelayCommand(ExecuteAddCommand);
             SaveCommand = new RelayCommand(ExecuteSaveCommand);
             DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
             ConnectCommand = new RelayCommand(ExecuteConnectCommand);
-            ApiGetCommand = new RelayCommand(GetConnectionListAsync);
             GetConnectionListCommand = new RelayCommand(ExecuteGetConnectionListCommand);
+            LoadedCommand = new RelayCommand(ExecuteLoadedCommand);
 
             //InitializeHttpClient();
 
@@ -157,12 +158,12 @@ namespace Main_UWP.ViewModel
 
         private async void ExecuteConnectCommand()
         {
-            if(SelectedConnection == null)
+            if (SelectedConnection == null)
             {
                 CommonFeature.Feature.ShowMessage("선택된 항목이 없음");
                 return;
             }
-            if(SelectedConnection.Password  == null || SelectedConnection.Password == string.Empty)
+            if (SelectedConnection.Password == null || SelectedConnection.Password == string.Empty)
             {
                 CommonFeature.Feature.ShowMessage("비밀번호 미입력");
                 return;
@@ -170,7 +171,7 @@ namespace Main_UWP.ViewModel
 
             HttpWebRequest request = null;
             string result = string.Empty;
-            
+
             try
             {
                 Uri uri = new Uri("https://localhost:44373/api/connection");
@@ -196,8 +197,9 @@ namespace Main_UWP.ViewModel
                             using (StreamReader streamReader = new StreamReader(responseStream, System.Text.Encoding.UTF8))
                             {
                                 result = streamReader.ReadToEnd();
-                                CanConnectList.Add(JsonConvert.DeserializeObject<ConnectionModel>(result));
-                                MainViewModel.CanUseFeatures = true;
+                                ReadyToConnectList.Add(JsonConvert.DeserializeObject<ConnectionModel>(result));
+                                // 다른 기능 사용 가능하게 하기
+                                _mainViewModel.CanActiveFeature = ReadyToConnectList.Any();
                             }
                         }
                     }
@@ -249,7 +251,7 @@ namespace Main_UWP.ViewModel
                 else
                 {
                     ConnectionList.Where(w => w.EditType == EditType.New)
-                                  .ToList().ForEach(s => SaveNewConnectionToServerHttpWebRequest(s));                    
+                                  .ToList().ForEach(s => SaveNewConnectionToServerHttpWebRequest(s));
                 }
             }
             catch (Exception ex)
@@ -328,25 +330,6 @@ namespace Main_UWP.ViewModel
             }).ToList();
 
             return infos;
-        }
-
-        /// <summary>
-        /// GET 테스트
-        /// </summary>
-        private async void GetConnectionListAsync()
-        {
-            try
-            {
-                var response = await client.GetAsync("api/connection");
-                response.EnsureSuccessStatusCode(); // 오류 코드를 던집니다.
-
-                //var connectList = await response.Content.ReadAsAsync<IEnumerable<ConnectionModel>>();
-                var connectList = await response.Content.ReadAsStringAsync();
-                // 데이터 가져와서 정리해야하는데.. 오류남
-            }
-            catch (Exception e)
-            {
-            }
         }
 
         /// <summary>
@@ -511,6 +494,12 @@ namespace Main_UWP.ViewModel
             {
                 CommonFeature.Feature.ShowMessage(ex.Message);
             }
+        }
+
+        public void ExecuteLoadedCommand(object obj)
+        {
+            _mainViewModel =
+            ((Main_UWP.ViewModel.MainViewModel)((Windows.UI.Xaml.FrameworkElement)((Windows.UI.Xaml.FrameworkElement)((Windows.UI.Xaml.FrameworkElement)((Windows.UI.Xaml.FrameworkElement)((Windows.UI.Xaml.FrameworkElement)obj).Parent).Parent).Parent).Parent).DataContext);
         }
 
         #endregion Method
