@@ -12,3 +12,14 @@ app.xmanifest -> Shared User Certificates 를 활성화 하라는 말도 있었�
 전자는 같은 에러가 발생.
 후자는 에러가 사라짐
 확인 차 둘다 비활성화 해보았지만 정상작동함.
+
+* UWP - MVVM Event 처리
+https://stackoverflow.com/questions/43304970/binding-ui-events-to-commands-in-uwp
+ - Microsoft.Xaml.Behaviors.Uwp.Managed Package 추가
+ - xmlns:i="using:Microsoft.Xaml.Interactivity"
+   xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+ - <i:Interaction.Behaviors>
+       <core:EventTriggerBehavior EventName="ItemClick">
+           <core:InvokeCommandAction Command="{Binding MenuItemCommand}"></core:InvokeCommandAction>
+       </core:EventTriggerBehavior>
+   </i:Interaction.Behaviors>

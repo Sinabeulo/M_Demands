@@ -10,6 +10,7 @@ namespace MVVM
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;
+        private readonly Action<object> _executeParam;
         private readonly Func<bool> _canExecute;
 
         /// <summary>
@@ -25,6 +26,10 @@ namespace MVVM
             : this(execute, null)
         {
         }
+        public RelayCommand(Action<object> execute)
+            : this(execute, null)
+        {
+        }
 
         /// <summary>
         /// Creates a new command.
@@ -36,6 +41,14 @@ namespace MVVM
             if (execute == null)
                 throw new ArgumentNullException("execute");
             _execute = execute;
+            _canExecute = canExecute;
+        }
+
+        public RelayCommand(Action<object> execute, Func<bool> canExecute)
+        {
+            if (execute == null)
+                throw new ArgumentNullException("execute");
+            _executeParam = execute;
             _canExecute = canExecute;
         }
 
@@ -59,7 +72,14 @@ namespace MVVM
         /// </param>
         public void Execute(object parameter)
         {
-            _execute();
+            if (parameter != null)
+            {
+                _executeParam(parameter);
+            }
+            else
+            {
+                _execute();
+            }
         }
 
         /// <summary>
