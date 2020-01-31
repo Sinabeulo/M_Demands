@@ -174,7 +174,7 @@ namespace Main_UWP.ViewModel
 
             try
             {
-                Uri uri = new Uri("https://localhost:44373/api/connection");
+                Uri uri = new Uri("https://localhost:44373/api/Login");
                 request = (HttpWebRequest)WebRequest.Create(uri);
                 request.Method = WebRequestMethods.Http.Post;
                 request.Timeout = 5000;

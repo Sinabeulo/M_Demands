@@ -1,4 +1,4 @@
-﻿namespace DACService.Models
+﻿namespace WebApiService.Models
 {
     public class ConnectionModel
     {

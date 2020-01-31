@@ -1,10 +1,10 @@
-﻿using DACService.Models;
+﻿using WebApiService.Models;
 using Dapper;
 using System;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace DACService.Mssql
+namespace WebApiService.Mssql
 {
     public class DBManager
     {

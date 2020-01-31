@@ -1,13 +1,11 @@
-﻿using DACService.Data;
-using DACService.Models;
-using DACService.Mssql;
+﻿using WebApiService.Data;
+using WebApiService.Models;
+using WebApiService.Mssql;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DACService.Controllers
+namespace WebApiService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -92,7 +90,7 @@ namespace DACService.Controllers
 
             DBManager dBManager = new DBManager();
 
-            if(!dBManager.DbConnection(conItem))
+            if (!dBManager.DbConnection(conItem))
             {
                 return BadRequest("연결실패");
             }

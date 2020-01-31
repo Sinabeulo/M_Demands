@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DACService.Controllers
+namespace WebApiService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,7 +14,7 @@ namespace DACService.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "value1", "value3" };
         }
 
         // GET api/values/5

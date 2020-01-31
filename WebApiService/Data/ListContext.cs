@@ -1,7 +1,7 @@
-﻿using DACService.Models;
+﻿using WebApiService.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DACService.Data
+namespace WebApiService.Data
 {
     public class ListContext : DbContext
     {
