@@ -2,8 +2,6 @@
 using WebApiService.Models;
 using WebApiService.Mssql;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -92,7 +90,7 @@ namespace WebApiService.Controllers
 
             DBManager dBManager = new DBManager();
 
-            if(!dBManager.DbConnection(conItem))
+            if (!dBManager.DbConnection(conItem))
             {
                 return BadRequest("연결실패");
             }
@@ -100,9 +98,9 @@ namespace WebApiService.Controllers
             //_context.Connections.Add(conItem);
             //await _context.SaveChangesAsync();
 
-            
 
-            return CreatedAtAction(nameof(ReturnConnection), new { id = conItem.Id }, conItem);
+
+            return Ok(conItem);
         }
 
         //// DELETE: api/Connections/5
@@ -131,17 +129,17 @@ namespace WebApiService.Controllers
             return _context.Connections.Any(e => e.Id == id);
         }
 
-        private async Task<ConnectionModel> ReturnConnection(long id)
-        {
-            var conItem = await _context.Connections.FindAsync(id);
+        //private async Task<ConnectionModel> ReturnConnection(long id)
+        //{
+        //    var conItem = await _context.Connections.FindAsync(id);
 
-            if (conItem == null)
-            {
-                return null;//NotFound();
-            }
+        //    if (conItem == null)
+        //    {
+        //        return null;//NotFound();
+        //    }
 
-            return conItem;//Ok(conItem);
-            //return _context.Connections[id];
-        }
+        //    return conItem;//Ok(conItem);
+        //    //return _context.Connections[id];
+        //}
     }
 }

@@ -24,6 +24,9 @@ namespace WebApiService
             services.AddDbContext<ConnectionContext>(opt =>
                 opt.UseInMemoryDatabase("Connect"));
 
+            services.AddDbContext<LoginContext>(opt =>
+             opt.UseInMemoryDatabase("Login"));
+
             services.AddDbContext<ListContext>(opt =>
                 opt.UseInMemoryDatabase("ConnectionList"));
 
