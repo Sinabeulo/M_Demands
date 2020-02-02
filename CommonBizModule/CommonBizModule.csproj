@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BizCommon_Core\BizCommon_Core.csproj" />
     <ProjectReference Include="..\CommonDacModule\CommonDacModule.csproj" />
   </ItemGroup>
 

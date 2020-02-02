@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BizCommon_Core\BizCommon_Core.csproj" />
     <ProjectReference Include="..\CommonBizModule\CommonBizModule.csproj" />
   </ItemGroup>
 

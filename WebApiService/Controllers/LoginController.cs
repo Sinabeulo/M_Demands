@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BizCommon_Core.Model;
+using CommonBizModule;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApiService.Data;
-using WebApiService.Models;
-using WebApiService.Mssql;
 
 namespace WebApiService.Controllers
 {
+    /// <summary>
+    /// Login 정보를 가져오거나 Login 기능
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
@@ -42,15 +45,15 @@ namespace WebApiService.Controllers
                 return BadRequest(ModelState);
             }
 
-            DBManager dBManager = new DBManager();
-
-            if (!dBManager.DbConnection(conItem))
+            if (!LoginBiz.Login.LoginToDatabase(conItem))
             {
                 return BadRequest("연결실패");
             }
 
             _context.Connections.Add(conItem);
             await _context.SaveChangesAsync();
+
+            //SaveToFile();
 
             return Ok(conItem);
         }

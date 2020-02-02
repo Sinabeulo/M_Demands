@@ -1,5 +1,5 @@
-﻿using WebApiService.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using BizCommon_Core.Model;
 
 namespace WebApiService.Data
 {
