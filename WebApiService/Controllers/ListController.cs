@@ -1,13 +1,19 @@
 ﻿using WebApiService.Data;
-using WebApiService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BizCommon_Core.Model;
+using BizCommon_Core.FileIO;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace WebApiService.Controllers
 {
+    /// <summary>
+    /// 연결 목록을 가져오거나 서버 파일로 저장합니다.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ListController : ControllerBase
@@ -23,6 +29,15 @@ namespace WebApiService.Controllers
         [HttpGet]
         public IEnumerable<ConnectionModel> GetConnectionList()
         {
+            if (_context.ConnectionList.Count() == 0)
+            {
+                var conList = ReadFromFile();
+                foreach (var connection in conList)
+                {
+                    _context.ConnectionList.Add(connection);
+                }
+            }
+
             return _context.ConnectionList;
         }
 
@@ -100,6 +115,8 @@ namespace WebApiService.Controllers
             _context.ConnectionList.Add(conItem);
             await _context.SaveChangesAsync();
 
+            SaveToFile();
+
             return CreatedAtAction(nameof(GetConnectionList), new { id = conItem.Id }, conItem);
         }
 
@@ -127,6 +144,40 @@ namespace WebApiService.Controllers
         private bool ConnectionItemExists(long id)
         {
             return _context.ConnectionList.Any(e => e.Id == id);
+        }
+
+        /// <summary>
+        /// 연결 목록 파일로 저장
+        /// </summary>
+        public void SaveToFile()
+        {
+            var saveList = _context.ConnectionList.Select(s => new ConnectionModel
+            {
+                DataSource = s.DataSource,
+                InitialCatalog = s.InitialCatalog,
+                Id = s.Id,
+                Title = s.Title,
+                UserID = s.UserID
+            })
+            .Select(s => s.ToJsonString()).ToList();
+
+            FileManager.FileReadWriter.FileWriter(FileManager.fileDir + @"\conList.txt", saveList);
+        }
+
+        public List<ConnectionModel> ReadFromFile()
+        {
+            var readData = FileManager.FileReadWriter.FileReader(FileManager.fileDir + @"\conList.txt");
+            if (readData == null || readData.Count == 0)
+            {
+                return new List<ConnectionModel>();
+            }
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var data in readData)
+            {
+                sb.Append(data);
+            }
+            return JsonConvert.DeserializeObject<List<ConnectionModel>>(sb.ToString());
         }
     }
 }

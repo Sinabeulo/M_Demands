@@ -1,4 +1,4 @@
-﻿namespace WebApiService.Models
+﻿namespace BizCommon_Core.Model
 {
     public class ConnectionModel
     {
@@ -27,6 +27,11 @@
         public override string ToString()
         {
             return $@"Data Source={DataSource};Initial Catalog={InitialCatalog}; User Id={UserID}; Password={Password}";
+        }
+
+        public string ToJsonString()
+        {
+            return "[{\"DataSource\":\""+ DataSource + "\",\"InitialCatalog\":\"" + InitialCatalog + "\",\"UserID\":\"" + UserID+"\"}]";
         }
     }
 }

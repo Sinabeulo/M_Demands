@@ -1,19 +1,30 @@
-﻿using Dapper;
+﻿using BizCommon_Core.Enums;
+using BizCommon_Core.Model;
+using CommonDacModule.Tables;
+using Dapper;
 using System;
 using System.Data.SqlClient;
 using System.Linq;
-using BizCommon_Core.Model;
 
-namespace WebApiService.Mssql
+namespace CommonDacModule
 {
-    public class DBManager
+    public class LoginDac
     {
-        public DBManager()
+        private static LoginDac _instance;
+        public static LoginDac LoginQuery
         {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new LoginDac();
+                }
 
+                return _instance;
+            }
         }
 
-        public bool DbConnection(ConnectionModel conItem)
+        public bool LoginToDatabase(ConnectionModel conItem)
         {
             try
             {
@@ -37,24 +48,5 @@ namespace WebApiService.Mssql
                 return false;
             }
         }
-    }
-
-    public class TblConnection
-    {
-        /// <summary>
-        /// 연결결과 상태
-        /// </summary>
-        public ResultStatus resultStatus { get; set; }
-    }
-
-    public interface QueryResult
-    {
-        ResultStatus resultStatus { get; set; }
-    }
-
-    public enum ResultStatus
-    {
-        X = 0,
-        O = 1
     }
 }

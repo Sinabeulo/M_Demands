@@ -138,20 +138,6 @@ namespace Main_UWP.ViewModel
             //InitializeHttpClient();
 
             NewConnectionModel = new ConnectionModel();
-
-            PropertyChanged += DBManagerViewModel_PropertyChanged;
-        }
-
-        private void DBManagerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(e.PropertyName):
-                    //SelectedDS = SelectedServer.DataSource;
-                    //SelectedIC = SelectedServer.InitialCatalog;
-                    //SelectedID = SelectedServer.UserID;
-                    break;
-            }
         }
 
         #region Execute
@@ -349,6 +335,9 @@ namespace Main_UWP.ViewModel
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        /// <summary>
+        /// 파일로 연결 목록 저장
+        /// </summary>
         private async void SaveNewConnectionToFile()
         {
             List<string> saveList = ConnectionList.Select(s => s.ToString()).ToList();
@@ -359,72 +348,16 @@ namespace Main_UWP.ViewModel
             CanSave = false;
         }
 
-        private async void SaveNewConnectionToServer(ConnectionModel newConnection)
-        {
-            //List<ConnectionModel> saveList = ConnectionList.Where(w => w.EditType == EditType.New).ToList();
-
-            //foreach(ConnectionModel info in saveList)
-            //{
-            //    // 데이터 Json Serialize
-            //    var convertedData = JsonConvert.SerializeObject(info);
-            //    StringContent content = new StringContent(convertedData);
-            //
-            //    // 요청
-            //    var response = await client.PostAsync("api/list", content);
-            //    response.EnsureSuccessStatusCode();
-            //
-            //
-            //    // 반환
-            //    var result = await response.Content.ReadAsStringAsync();
-            //    var tmp = JsonConvert.DeserializeObject<ConnectionModel>(result);
-            //}
-
-            var convertedData = JsonConvert.SerializeObject(newConnection);
-            StringContent content = new StringContent(convertedData, System.Text.Encoding.UTF8, "application/json");
-
-            // 요청
-            var response = await client.PostAsync("api/List", content);
-            response.EnsureSuccessStatusCode();
-
-            // 반환
-            var result = await response.Content.ReadAsStringAsync();
-            var tmp = JsonConvert.DeserializeObject<ConnectionModel>(result);
-
-            //ConnectionList = JsonConvert.DeserializeObject<ConnectionModel>(result);
-            //string convertedData = JsonConvert.SerializeObject(newConnection);
-            //StringContent content = new StringContent(convertedData);
-
-            //System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://localhost:44373/list");
-            //request.Method = "POST";
-            //request.ContentType = "application/json";
-            //request.Timeout = 30 * 1000;
-
-            //byte[] bytes = System.Text.Encoding.ASCII.GetBytes(convertedData);
-            //request.ContentLength = bytes.Length;
-
-            //using (System.IO.Stream reqStream = request.GetRequestStream())
-            //{
-            //    reqStream.Write(bytes, 0, bytes.Length);
-            //}
-
-            //string responseText = string.Empty;
-            //using(System.Net.WebResponse resp = request.GetResponse())
-            //{
-            //    System.IO.Stream respStream = resp.GetResponseStream();
-            //    using(System.IO.StreamReader sr = new System.IO.StreamReader(respStream))
-            //    {
-            //        responseText = sr.ReadToEnd();
-            //    }
-            //}
-        }
-
+        /// <summary>
+        /// 서버에서 연결목록 가져오기
+        /// </summary>
         private async void GetConnectionsFromServer()
         {
             HttpWebRequest request = null;
             string result = string.Empty;
             try
             {
-                Uri uri = new Uri("https://localhost:44373/api/list");
+                Uri uri = new Uri("https://localhost:44373/api/List");
                 request = (HttpWebRequest)WebRequest.Create(uri);
                 request.Method = WebRequestMethods.Http.Get;
                 request.Timeout = 5000;
@@ -459,7 +392,7 @@ namespace Main_UWP.ViewModel
             ConnectionModel savedData = null;
             try
             {
-                Uri uri = new Uri("https://localhost:44373/api/list");
+                Uri uri = new Uri("https://localhost:44373/api/List");
                 request = (HttpWebRequest)WebRequest.Create(uri);
                 request.Method = WebRequestMethods.Http.Post;
                 request.Timeout = 5000;
@@ -488,7 +421,6 @@ namespace Main_UWP.ViewModel
                     }
                 }
 
-                //ConnectionList.Add(savedData);
             }
             catch (Exception ex)
             {
@@ -496,6 +428,10 @@ namespace Main_UWP.ViewModel
             }
         }
 
+        /// <summary>
+        /// MainView 상태 변경을 위해 로드 시 MainViewModel 객체 가져옴
+        /// </summary>
+        /// <param name="obj"></param>
         public void ExecuteLoadedCommand(object obj)
         {
             _mainViewModel =
