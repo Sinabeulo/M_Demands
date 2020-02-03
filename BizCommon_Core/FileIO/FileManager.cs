@@ -55,6 +55,32 @@ namespace BizCommon_Core.FileIO
             }
         }
 
+        public bool FileWriter(string path, string data, bool encry = false)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+                {
+                    using (StreamWriter writer = new StreamWriter(fs))
+                    {
+                        if (encry)
+                        {
+                        }
+                        else
+                        {
+                            writer.WriteLine(data);
+                        }
+                    }
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public List<string> FileReader(string path, bool encry = false)
         {
             try

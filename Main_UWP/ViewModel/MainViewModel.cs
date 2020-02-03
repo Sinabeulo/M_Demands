@@ -1,6 +1,7 @@
 ﻿using Main_UWP.View;
 using MVVM;
 using MVVM.Base;
+using System;
 using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
 
@@ -9,7 +10,7 @@ namespace Main_UWP.ViewModel
     public class MainViewModel : ViewModelBase
     {
         //public static bool CanUseFeatures { get; set; } = false;
-        
+
 
         #region Field
 
@@ -21,6 +22,7 @@ namespace Main_UWP.ViewModel
         public ICommand MoveTest1Page { get; set; }
         public ICommand DBConnectionCommand { get; set; }
         public ICommand FileWriteTestCommand { get; set; }
+        public ICommand CommonFeatureControlCommand { get; set; }
 
         public UserControl PageContent
         {
@@ -39,6 +41,12 @@ namespace Main_UWP.ViewModel
             MoveTest1Page = new RelayCommand(ExecuteMoveTest1Page);
             DBConnectionCommand = new RelayCommand(ExecuteDBConnectionCommand);
             FileWriteTestCommand = new RelayCommand(ExecuteFileWriteTestCommand);
+            CommonFeatureControlCommand = new RelayCommand(ExecuteCommonFeatureControlCommand);
+        }
+
+        private void ExecuteCommonFeatureControlCommand()
+        {
+            PageContent = new CommonFeatureControlVIew();
         }
 
         private void ExecuteFileWriteTestCommand()
