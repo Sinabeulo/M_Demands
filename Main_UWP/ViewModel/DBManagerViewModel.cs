@@ -1,4 +1,5 @@
 ﻿using Main_UWP.Model;
+using Main_UWP.Request;
 using MVVM;
 using MVVM.Base;
 using MVVM.ItemType;
@@ -353,32 +354,35 @@ namespace Main_UWP.ViewModel
         /// </summary>
         private async void GetConnectionsFromServer()
         {
-            HttpWebRequest request = null;
             string result = string.Empty;
-            try
-            {
-                Uri uri = new Uri("https://localhost:44373/api/List");
-                request = (HttpWebRequest)WebRequest.Create(uri);
-                request.Method = WebRequestMethods.Http.Get;
-                request.Timeout = 5000;
 
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    using (Stream responseStream = response.GetResponseStream())
-                    {
-                        using (StreamReader streamReader = new StreamReader(responseStream, System.Text.Encoding.UTF8))
-                        {
-                            result = streamReader.ReadToEnd();
-                            ConnectionList = JsonConvert.DeserializeObject<List<ConnectionModel>>(result).ToObservableCollection();
-                        }
-                    }
-                }
+            result = RequestWebApi.Request.GetRequest("List");
+            ConnectionList = JsonConvert.DeserializeObject<List<ConnectionModel>>(result).ToObservableCollection();
 
-            }
-            catch (Exception ex)
-            {
-                CommonFeature.Feature.ShowMessage(ex.Message);
-            }
+            //try
+            //{
+            //    Uri uri = new Uri("https://localhost:44373/api/List");
+            //    request = (HttpWebRequest)WebRequest.Create(uri);
+            //    request.Method = WebRequestMethods.Http.Get;
+            //    request.Timeout = 5000;
+
+            //    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            //    {
+            //        using (Stream responseStream = response.GetResponseStream())
+            //        {
+            //            using (StreamReader streamReader = new StreamReader(responseStream, System.Text.Encoding.UTF8))
+            //            {
+            //                result = streamReader.ReadToEnd();
+            //                ConnectionList = JsonConvert.DeserializeObject<List<ConnectionModel>>(result).ToObservableCollection();
+            //            }
+            //        }
+            //    }
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    CommonFeature.Feature.ShowMessage(ex.Message);
+            //}
         }
 
         /// <summary>
@@ -390,42 +394,48 @@ namespace Main_UWP.ViewModel
             HttpWebRequest request = null;
             string result = string.Empty;
             ConnectionModel savedData = null;
-            try
-            {
-                Uri uri = new Uri("https://localhost:44373/api/List");
-                request = (HttpWebRequest)WebRequest.Create(uri);
-                request.Method = WebRequestMethods.Http.Post;
-                request.Timeout = 5000;
 
-                // 인코딩 UTF-8
-                byte[] data = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(newConnection));
-                request.ContentType = "application/json";
-                request.ContentLength = data.Length;
+            result = RequestWebApi.Request.PostRequest("List", newConnection);
+            savedData = JsonConvert.DeserializeObject<ConnectionModel>(result);
+            if (savedData != null)
+                newConnection.EditType = EditType.None;
 
-                // 데이터 전송
-                using (Stream dataStream = request.GetRequestStream())
-                {
-                    dataStream.Write(data, 0, data.Length);
+            //try
+            //{
+            //    Uri uri = new Uri("https://localhost:44373/api/List");
+            //    request = (HttpWebRequest)WebRequest.Create(uri);
+            //    request.Method = WebRequestMethods.Http.Post;
+            //    request.Timeout = 5000;
 
-                    // 전송 응답
-                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                    {
-                        using (Stream responseStream = response.GetResponseStream())
-                        {
-                            using (StreamReader streamReader = new StreamReader(responseStream, System.Text.Encoding.UTF8))
-                            {
-                                result = streamReader.ReadToEnd();
-                                savedData = JsonConvert.DeserializeObject<ConnectionModel>(result);
-                            }
-                        }
-                    }
-                }
+            //    // 인코딩 UTF-8
+            //    byte[] data = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(newConnection));
+            //    request.ContentType = "application/json";
+            //    request.ContentLength = data.Length;
 
-            }
-            catch (Exception ex)
-            {
-                CommonFeature.Feature.ShowMessage(ex.Message);
-            }
+            //    // 데이터 전송
+            //    using (Stream dataStream = request.GetRequestStream())
+            //    {
+            //        dataStream.Write(data, 0, data.Length);
+
+            //        // 전송 응답
+            //        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            //        {
+            //            using (Stream responseStream = response.GetResponseStream())
+            //            {
+            //                using (StreamReader streamReader = new StreamReader(responseStream, System.Text.Encoding.UTF8))
+            //                {
+            //                    result = streamReader.ReadToEnd();
+            //                    savedData = JsonConvert.DeserializeObject<ConnectionModel>(result);
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    CommonFeature.Feature.ShowMessage(ex.Message);
+            //}
         }
 
         /// <summary>

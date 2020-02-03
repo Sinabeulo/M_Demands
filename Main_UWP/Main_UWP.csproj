@@ -119,20 +119,30 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ComboBinding.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\ConnectionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Request\RequestWebApi.cs" />
+    <Compile Include="ViewModel\CommonFeatureControlVIewModel.cs" />
     <Compile Include="ViewModel\DBManagerViewModel.cs" />
     <Compile Include="ViewModel\FileIOTestViewModel.cs" />
+    <Compile Include="ViewModel\LanguageControlViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Test1_ViewModel.cs" />
+    <Compile Include="View\CommonFeatureControlVIew.xaml.cs">
+      <DependentUpon>CommonFeatureControlVIew.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\DBManagerView.xaml.cs">
       <DependentUpon>DBManagerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\FileIOTestView.xaml.cs">
       <DependentUpon>FileIOTestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LanguageControlView.xaml.cs">
+      <DependentUpon>LanguageControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -167,6 +177,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\CommonFeatureControlVIew.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\DBManagerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -174,6 +188,10 @@
     <Page Include="View\FileIOTestView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LanguageControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -204,6 +222,7 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

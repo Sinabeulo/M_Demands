@@ -29,9 +29,9 @@
             return $@"Data Source={DataSource};Initial Catalog={InitialCatalog}; User Id={UserID}; Password={Password}";
         }
 
-        public string ToJsonString()
-        {
-            return "[{\"DataSource\":\""+ DataSource + "\",\"InitialCatalog\":\"" + InitialCatalog + "\",\"UserID\":\"" + UserID+"\"}]";
-        }
+        //public string ToJsonString()
+        //{
+        //    return "[{\"DataSource\":\"" + DataSource + "\",\"InitialCatalog\":\"" + InitialCatalog + "\",\"UserID\":\"" + UserID + "\",\"Password\":\"" + Password + "\",\"Title\":\"" + Title + "\"}]";
+        //}
     }
 }

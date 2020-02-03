@@ -29,7 +29,9 @@ namespace WebApiService
 
             services.AddDbContext<ListContext>(opt =>
                 opt.UseInMemoryDatabase("ConnectionList"));
-
+            
+            services.AddDbContext<LanguageContext>(opt =>
+                opt.UseInMemoryDatabase("Language"));
             services.AddMvc();
         }
 

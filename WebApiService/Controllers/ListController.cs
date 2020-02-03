@@ -37,6 +37,7 @@ namespace WebApiService.Controllers
                     _context.ConnectionList.Add(connection);
                 }
             }
+            _context.SaveChanges();
 
             return _context.ConnectionList;
         }
@@ -104,11 +105,11 @@ namespace WebApiService.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (conItem != null) 
+            if (conItem != null)
                 conItem.Password = null;
 
 
-            if(_context.ConnectionList.Any(a=>a.DataSource == conItem.DataSource))
+            if (_context.ConnectionList.Any(a => a.DataSource == conItem.DataSource))
             {
                 return BadRequest("이미 있음");
             }
@@ -159,9 +160,9 @@ namespace WebApiService.Controllers
                 Title = s.Title,
                 UserID = s.UserID
             })
-            .Select(s => s.ToJsonString()).ToList();
+            .ToList();
 
-            FileManager.FileReadWriter.FileWriter(FileManager.fileDir + @"\conList.txt", saveList);
+            FileManager.FileReadWriter.FileWriter(FileManager.fileDir + @"\conList.txt", JsonConvert.SerializeObject(saveList));
         }
 
         public List<ConnectionModel> ReadFromFile()
@@ -171,13 +172,23 @@ namespace WebApiService.Controllers
             {
                 return new List<ConnectionModel>();
             }
-            StringBuilder sb = new StringBuilder();
+            //StringBuilder sb = new StringBuilder();
 
-            foreach (var data in readData)
-            {
-                sb.Append(data);
-            }
-            return JsonConvert.DeserializeObject<List<ConnectionModel>>(sb.ToString());
+            //for (int i = 0; i < readData.Count; i++)// (var data in readData)
+            //{
+            //    if(i != readData.Count - 1)
+            //    {
+            //        sb.Append(readData[i] + ",");
+            //    }
+            //    sb.Append(data);
+            //}
+            List<ConnectionModel> retList = new List<ConnectionModel>();
+            //foreach(var model in readData)
+            //{
+            //    retList.Add(JsonConvert.DeserializeObject<List<ConnectionModel>>(model));
+            //}
+            //return JsonConvert.DeserializeObject<List<ConnectionModel>>(sb.ToString());
+            return JsonConvert.DeserializeObject<List<ConnectionModel>>(readData[0]);
         }
     }
 }
