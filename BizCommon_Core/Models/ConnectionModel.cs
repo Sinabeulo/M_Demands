@@ -1,4 +1,4 @@
-﻿namespace BizCommon_Core.Model
+﻿namespace BizCommon_Core.Models
 {
     public class ConnectionModel
     {

@@ -1,6 +1,9 @@
-﻿using System;
+﻿using BizCommon_Core.Models;
+using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 
 namespace CommonDacModule
@@ -21,24 +24,24 @@ namespace CommonDacModule
             }
         }
 
-        public bool SendQueary()
+        public bool SendQueary(ConnectionModel conItem, string query)
         {
             try
             {
-                //using (SqlConnection connection = new SqlConnection(conItem.ToString()))
-                //{
-                //    connection.Open();
-                //
-                //    var results = connection.Query<TblConnection>("SELECT 'O' AS resultStatus").Select(obj => new TblConnection()
-                //    {
-                //        resultStatus = obj.resultStatus
-                //    }).FirstOrDefault();
-                //
-                //    if (results.resultStatus != ResultStatus.O)
-                //        return false;
-                //
-                //    return true;
-                //}
+                using (SqlConnection connection = new SqlConnection(conItem.ToString()))
+                {
+                    connection.Open();
+
+                    var results = connection.Query<LanguageControlModel>(query).Select(obj => new LanguageControlModel
+                    {
+                        
+                    }).FirstOrDefault();
+
+                    //if (results.resultStatus != ResultStatus.O)
+                    //    return false;
+
+                    return true;
+                }
             }
             catch (Exception ex)
             {

@@ -45,7 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "23.DacModule", "23.DacModul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonDacModule", "CommonDacModule\CommonDacModule.csproj", "{342E120C-EA45-41FB-8A4C-8B30C7BB59B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizCommon_Core", "BizCommon_Core\BizCommon_Core.csproj", "{E3E508FD-31DD-44CC-84E4-4CC1287A60D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BizCommon_Core", "BizCommon_Core\BizCommon_Core.csproj", "{E3E508FD-31DD-44CC-84E4-4CC1287A60D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

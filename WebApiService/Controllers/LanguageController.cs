@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BizCommon_Core.Models;
+using CommonBizModule;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApiService.Common;
 using WebApiService.Data;
 
 namespace WebApiService.Controllers
@@ -22,19 +24,24 @@ namespace WebApiService.Controllers
 
         // POST: api/Connections
         [HttpPost]
-        public async Task<IActionResult> PostConnections([FromBody] LanguageControlModel conItem)
+        public async Task<IActionResult> PostConnections([FromBody] LanguageControlModel conItem, [FromBody]string title)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            //DBManager dBManager = new DBManager();
-
-            if (!dBManager.DbConnection(conItem))
+            if(!(ConnectedDB.Instance.GetConnection(title) is ConnectionModel con))
             {
-                return BadRequest("연결실패");
+                return BadRequest("연결된 항목 없음");
             }
+
+            LanguageBiz.BizInstance.SetLanguage(con, conItem);
+
+            //if (!dBManager.DbConnection(conItem))
+            //{
+            //    return BadRequest("연결실패");
+            //}
 
             return Ok(conItem);
         }

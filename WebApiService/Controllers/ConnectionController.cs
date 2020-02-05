@@ -3,7 +3,7 @@ using WebApiService.Mssql;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using BizCommon_Core.Model;
+using BizCommon_Core.Models;
 
 namespace WebApiService.Controllers
 {

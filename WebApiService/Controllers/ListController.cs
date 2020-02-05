@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BizCommon_Core.Model;
+using BizCommon_Core.Models;
 using BizCommon_Core.FileIO;
 using System.Text;
 using Newtonsoft.Json;
@@ -108,8 +108,8 @@ namespace WebApiService.Controllers
             if (conItem != null)
                 conItem.Password = null;
 
-
-            if (_context.ConnectionList.Any(a => a.DataSource == conItem.DataSource))
+            // Key : Title 
+            if (_context.ConnectionList.Any(a => a.Title == conItem.Title))
             {
                 return BadRequest("이미 있음");
             }

@@ -22,9 +22,13 @@ namespace CommonBizModule
             }
         }
 
-        public bool SetLanguage(LanguageControlModel lanModel)
+        public bool SetLanguage(ConnectionModel con, LanguageControlModel langModel)
         {
-            if (InsertDac.InsertQuery.SendQueary())
+            string execStr = $"EXEC [sp_LanguageManagement] @Flag = '{langModel.Flag}'," +
+                $" @LanguageKey = '{langModel.LanguageKey}'," +
+                $" @LanguageValue = '{langModel.LanguageValue}'";
+
+            if(InsertDac.InsertQuery.SendQueary(con, execStr))
             {
                 return true;
             }
