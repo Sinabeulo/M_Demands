@@ -1,4 +1,4 @@
-﻿using BizCommon_Core.Model;
+﻿using BizCommon_Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApiService.Data

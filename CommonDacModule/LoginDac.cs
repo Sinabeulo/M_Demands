@@ -1,5 +1,5 @@
 ﻿using BizCommon_Core.Enums;
-using BizCommon_Core.Model;
+using BizCommon_Core.Models;
 using CommonDacModule.Tables;
 using Dapper;
 using System;

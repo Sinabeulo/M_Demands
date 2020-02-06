@@ -1,9 +1,10 @@
-﻿using BizCommon_Core.Model;
+﻿using BizCommon_Core.Models;
 using CommonBizModule;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApiService.Common;
 using WebApiService.Data;
 
 namespace WebApiService.Controllers
@@ -51,7 +52,10 @@ namespace WebApiService.Controllers
             }
 
             _context.Connections.Add(conItem);
+
             await _context.SaveChangesAsync();
+
+            ConnectedDB.Instance.SetConnection(conItem);
 
             //SaveToFile();
 

@@ -1,10 +1,9 @@
-﻿using BizCommon_Core.Enums;
-using BizCommon_Core.Interface;
+﻿using Main_UWP.Enums;
 
-namespace BizCommon_Core.Models
+namespace Main_UWP.Model
 {
     public class LanguageControlModel : QueryResult
-    {  
+    {
         /// <summary>
         /// 언어키
         /// </summary>
@@ -20,6 +19,6 @@ namespace BizCommon_Core.Models
         /// <summary>
         /// 결과
         /// </summary>
-        public ResultStatus resultStatus { get ; set ; }
+        public ResultStatus resultStatus { get; set; }
     }
 }
