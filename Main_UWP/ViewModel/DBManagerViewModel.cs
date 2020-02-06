@@ -1,8 +1,8 @@
-﻿using Main_UWP.Model;
+﻿using BizCommon_Std.ItemType;
+using BizCommon_Std.Models;
 using Main_UWP.Request;
 using MVVM;
 using MVVM.Base;
-using MVVM.ItemType;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

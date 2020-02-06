@@ -1,9 +1,9 @@
-﻿using BizCommon_Core.Enums;
-using BizCommon_Core.Interface;
+﻿using BizCommon_Std.Enums;
+using BizCommon_Std.Interface;
 
-namespace BizCommon_Core.Models
+namespace BizCommon_Std.Models
 {
-    public class LanguageControlModel : QueryRequirement , QueryResult
+    public class LanguageControlModel : IQueryRequirement , IQueryResult
     {  
         /// <summary>
         /// 언어키
@@ -25,5 +25,9 @@ namespace BizCommon_Core.Models
         /// 쿼리를 전송할 연결 타이틀
         /// </summary>
         public string TargetTitle { get; set; }
+        /// <summary>
+        /// 실행하고자하는 기능
+        /// </summary>
+        public string TargetFeature { get; set; }
     }
 }

@@ -10,9 +10,9 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <!--<UserControl.DataContext>
-        <viewmodel:Lan
-    </UserControl.DataContext>-->
+    <UserControl.DataContext>
+        <viewmodel:LanguageControlViewModel/>
+    </UserControl.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -26,7 +26,7 @@
         <StackPanel Grid.Column="0" Margin="2">
             <ListBox Height="100"
                      ItemsSource="{Binding CanConnectList}"
-                     SelectedItem="{Binding SelectedCanConnect}">
+                     SelectedItem="{Binding SelectedCanConnect,Mode=TwoWay}">
             </ListBox>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -40,9 +40,10 @@
                         Content="추가" 
                         Command="{Binding AddCommand}"/>
             </Grid>
-            <ListBox Height="100"
+            <!--<ListBox Height="100"
                      ItemsSource="{Binding SelectedList, Mode=TwoWay}">
-            </ListBox>
+            </ListBox>-->
+            
         </StackPanel>
 
         <Grid Grid.Column="1">
@@ -51,11 +52,20 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="120"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="선택된 연결"/>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedCanConnect.Title}"/>
+            </Grid>
+            <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
@@ -73,14 +83,14 @@
                           ItemsSource="{Binding FlagList}"
                           DisplayMemberPath="ComboDisplay"
                           SelectedValuePath="ComboValue"
-                          SelectedValue="{Binding ApplyModel.Flag}"/>
+                          SelectedValue="{Binding ApplyModel.Flag,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="1" Grid.Column="1"
-                         Text="{Binding ApplyModel.LanguageKey,Mode=TwoWay}"/>
+                         Text="{Binding ApplyModel.LanguageKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="2" Grid.Column="1"
-                         Text="{Binding ApplyModel.LanguageValue,Mode=TwoWay}"/>
+                         Text="{Binding ApplyModel.LanguageValue,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 
             </Grid>
-            <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>

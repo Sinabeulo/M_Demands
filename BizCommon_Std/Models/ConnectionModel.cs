@@ -1,13 +1,11 @@
-﻿using MVVM.Base;
-using MVVM.ItemType;
+﻿using BizCommon_Std.ItemType;
 using Newtonsoft.Json;
 
-namespace Main_UWP.Model
+namespace BizCommon_Std.Models
 {
-    public class ConnectionModel : ModelBase
+    public class ConnectionModel
     {
-        private string _password;
-
+        public int Id { get; set; }
         /// <summary>
         /// DB 주소
         /// </summary>
@@ -23,22 +21,17 @@ namespace Main_UWP.Model
         /// <summary>
         /// 비밀번호
         /// </summary>
-        public string Password
-        {
-            get => _password;
-            set => SetProperty(ref _password, nameof(Password), value);
-        }
+        public string Password { get; set; }
         /// <summary>
-        /// 타이틀 명
+        /// 제목
         /// </summary>
         public string Title { get; set; }
-
         [JsonIgnore]
         public EditType EditType { get; set; }
 
         public override string ToString()
         {
-            return $"{DataSource}#{InitialCatalog}#{UserID}#{Title}";
+            return $@"Data Source={DataSource};Initial Catalog={InitialCatalog}; User Id={UserID}; Password={Password}";
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using BizCommon_Core.Models;
+﻿using BizCommon_Std.Models;
 using CommonDacModule;
 
 namespace CommonBizModule

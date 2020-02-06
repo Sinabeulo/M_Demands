@@ -1,8 +1,6 @@
-﻿using BizCommon_Core.Models;
+﻿using BizCommon_Std.Models;
 using CommonDacModule;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Data;
 
 namespace CommonBizModule
 {
@@ -22,18 +20,18 @@ namespace CommonBizModule
             }
         }
 
-        public bool SetLanguage(ConnectionModel con, LanguageControlModel langModel)
+        public DataTable SetLanguage(ConnectionModel con, LanguageControlModel langModel)
         {
             string execStr = $"EXEC [sp_LanguageManagement] @Flag = '{langModel.Flag}'," +
                 $" @LanguageKey = '{langModel.LanguageKey}'," +
                 $" @LanguageValue = '{langModel.LanguageValue}'";
 
-            if(InsertDac.InsertQuery.SendQueary(con, execStr))
+            if(!(InsertDac.InsertQuery.SendQueary(con, execStr) is DataTable dt))
             {
-                return true;
+                return null;
             }
 
-            return false;
+            return dt;
         }
     }
 }

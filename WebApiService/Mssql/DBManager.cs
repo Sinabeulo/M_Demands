@@ -2,7 +2,7 @@
 using System;
 using System.Data.SqlClient;
 using System.Linq;
-using BizCommon_Core.Models;
+using BizCommon_Std.Models;
 
 namespace WebApiService.Mssql
 {

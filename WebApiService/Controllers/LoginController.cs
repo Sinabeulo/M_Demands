@@ -1,4 +1,4 @@
-﻿using BizCommon_Core.Models;
+﻿using BizCommon_Std.Models;
 using CommonBizModule;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
