@@ -2,50 +2,46 @@
 using BizCommon_Std.Models;
 using Dapper;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 
 namespace CommonDacModule
 {
-    public class InsertDac
+    public class SelectDac
     {
-        private static InsertDac _instance;
-        public static InsertDac InsertQuery
+        private static SelectDac _instance;
+        public static SelectDac SelectQuery
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new InsertDac();
+                    _instance = new SelectDac();
                 }
 
                 return _instance;
             }
         }
 
-        public bool SendQuearyDapper(ConnectionModel conItem, string query)
+        public List<dynamic> SendQuearyDapper(ConnectionModel conItem, string query)
         {
             try
             {
+                List<dynamic> results;
                 using (SqlConnection connection = new SqlConnection(conItem.ToString()))
                 {
                     connection.Open();
 
-                    var results = connection.Query<LanguageControlModel>(query).Select(obj => new LanguageControlModel
-                    {
-                        resultStatus = obj.resultStatus
-                    }).FirstOrDefault();
-
-                    if (results.resultStatus != ResultStatus.O)
-                        return false;
-
-                    return true;
+                    results = connection.Query(query).ToList();
                 }
+                return results;
             }
             catch (Exception ex)
             {
-                return false;
+                return null;
             }
         }
 
@@ -59,11 +55,11 @@ namespace CommonDacModule
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand(query, connection))        
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
                         adapter.Fill(dt);
-                    }                                
+                    }
                 }
                 return dt;
             }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BizCommon_Core.Models;
+﻿using System.Threading.Tasks;
+using BizCommon_Std.Models;
 using CommonBizModule;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApiService.Common;
 using WebApiService.Data;
@@ -22,28 +18,28 @@ namespace WebApiService.Controllers
             _context = context;
         }
 
-        // POST: api/Connections
+        // POST: api/Language
         [HttpPost]
-        public async Task<IActionResult> PostConnections([FromBody] LanguageControlModel conItem, [FromBody]string title)
+        public async Task<IActionResult> PostSetLanguage([FromBody] LanguageControlModel conItem)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if(!(ConnectedDB.Instance.GetConnection(title) is ConnectionModel con))
+            if(!(ConnectedDB.Instance.GetConnection(conItem.TargetTitle) is ConnectionModel con))
             {
                 return BadRequest("연결된 항목 없음");
             }
 
-            LanguageBiz.BizInstance.SetLanguage(con, conItem);
+            var retDt = LanguageBiz.BizInstance.SetLanguage(con, conItem);
 
             //if (!dBManager.DbConnection(conItem))
             //{
             //    return BadRequest("연결실패");
             //}
 
-            return Ok(conItem);
+            return Ok(retDt);
         }
     }
 }

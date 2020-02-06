@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BizCommon_Core\BizCommon_Core.csproj" />
     <ProjectReference Include="..\CommonBizModule\CommonBizModule.csproj" />
+    <ProjectReference Include="..\MATRBizModule\MATRBizModule.csproj" />
   </ItemGroup>
 
 </Project>

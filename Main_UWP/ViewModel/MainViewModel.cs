@@ -1,7 +1,6 @@
 ﻿using Main_UWP.View;
 using MVVM;
 using MVVM.Base;
-using System;
 using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
 

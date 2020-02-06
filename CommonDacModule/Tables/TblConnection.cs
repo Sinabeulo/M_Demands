@@ -1,9 +1,9 @@
-﻿using BizCommon_Core.Enums;
-using BizCommon_Core.Interface;
+﻿using BizCommon_Std.Enums;
+using BizCommon_Std.Interface;
 
 namespace CommonDacModule.Tables
 {
-    public class TblConnection : QueryResult
+    public class TblConnection : IQueryResult
     {
         /// <summary>
         /// 연결결과 상태

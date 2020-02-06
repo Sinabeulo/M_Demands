@@ -6,7 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BizCommon_Std\BizCommon_Std.csproj" />
-    <ProjectReference Include="..\CommonDacModule\CommonDacModule.csproj" />
+    <ProjectReference Include="..\CommonBizModule\CommonBizModule.csproj" />
+    <ProjectReference Include="..\MATRBizModule\MATRBizModule.csproj" />
   </ItemGroup>
 
 </Project>
