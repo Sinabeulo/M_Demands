@@ -167,7 +167,7 @@ namespace WebApiService.Controllers
 
         public List<ConnectionModel> ReadFromFile()
         {
-            var readData = FileManager.FileReadWriter.FileReader(FileManager.fileDir + @"\conList.txt");
+            var readData = FileManager.FileReadWriter.FileReaderToList(FileManager.fileDir + @"\conList.txt");
             if (readData == null || readData.Count == 0)
             {
                 return new List<ConnectionModel>();

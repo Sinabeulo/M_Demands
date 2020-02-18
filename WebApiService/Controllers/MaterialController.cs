@@ -1,7 +1,7 @@
 ﻿using BizCommon_Std.Interface;
 using BizCommon_Std.MATR;
 using BizCommon_Std.RequestModel;
-using CommonBizModule.MATRBizModule;
+using MATRBizModule;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace BizCommon_Std.FileIO
 {
@@ -81,7 +82,7 @@ namespace BizCommon_Std.FileIO
             }
         }
 
-        public List<string> FileReader(string path, bool encry = false)
+        public List<string> FileReaderToList(string path, bool encry = false)
         {
             try
             {
@@ -116,6 +117,26 @@ namespace BizCommon_Std.FileIO
             }
         }
 
+
+        public async Task<string> FileReaderToString(string path, bool encry = false)
+        {
+            try
+            {
+                string retData = string.Empty;
+
+                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read))
+                using (StreamReader reader = new StreamReader(fs))
+                {
+                    retData = await reader.ReadToEndAsync();
+                }
+                
+                return retData;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public void CheckOrCreateDirectory(string dir)
         {
