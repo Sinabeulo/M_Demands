@@ -27,12 +27,14 @@ namespace Main_UWP.ViewModel
 
         public ICommand SearchCommand { get; set; }
         public ICommand SetLanguageDataCommand { get; set; }
+        public ICommand UserCodeCopyCommand { get; set; }
 
 
         public CommonFeatureControlVIewModel()
         {
             SetLanguageDataCommand = new RelayCommand(ExecuteSetLanguageDataCommand);
             SearchCommand = new RelayCommand(ExecuteSearchCommand);
+            UserCodeCopyCommand = new RelayCommand(ExecuteUserCodeCopyCommand);
         }
 
         private void ExecuteSearchCommand()
@@ -44,6 +46,11 @@ namespace Main_UWP.ViewModel
         private void ExecuteSetLanguageDataCommand()
         {
             PageContent = new LanguageControlView();
+        }
+
+        private void ExecuteUserCodeCopyCommand()
+        {
+            PageContent = new UserCodeCopyView();
         }
     }
 }

@@ -134,8 +134,12 @@
     <Compile Include="ViewModel\LanguageControlViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Test1_ViewModel.cs" />
+    <Compile Include="ViewModel\UserCodeCopyViewModel.cs" />
     <Compile Include="View\CommonFeatureControlVIew.xaml.cs">
       <DependentUpon>CommonFeatureControlVIew.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ConnectionListView.xaml.cs">
+      <DependentUpon>ConnectionListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DBManagerView.xaml.cs">
       <DependentUpon>DBManagerView.xaml</DependentUpon>
@@ -151,6 +155,9 @@
     </Compile>
     <Compile Include="View\Test1_View.xaml.cs">
       <DependentUpon>Test1_View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserCodeCopyView.xaml.cs">
+      <DependentUpon>UserCodeCopyView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +190,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ConnectionListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\DBManagerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -202,6 +213,10 @@
     <Page Include="View\Test1_View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserCodeCopyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

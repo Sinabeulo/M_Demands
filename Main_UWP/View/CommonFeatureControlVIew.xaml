@@ -18,7 +18,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -53,6 +53,8 @@
                     ScrollViewer.VerticalScrollBarVisibility="Visible">
             <Button Command="{Binding SetLanguageDataCommand}"
                     Content="언어 데이터 추가"/>
+            <Button Command="{Binding UserCodeCopyCommand}"
+                    Content="사용자코드 복사"/>
             
         </StackPanel>
 
@@ -61,7 +63,7 @@
             
         </StackPanel>
 
-        <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" RowSpacing="2">
+        <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <ContentControl Content="{Binding PageContent}"/>
         </Grid>
     </Grid>

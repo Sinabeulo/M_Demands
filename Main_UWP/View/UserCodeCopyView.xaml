@@ -1,0 +1,54 @@
+﻿<UserControl
+    x:Class="Main_UWP.View.UserCodeCopyView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Main_UWP.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodel="using:Main_UWP.ViewModel"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.DataContext>
+        <viewmodel:UserCodeCopyViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Margin="2"
+                   Text="HeaderCode"
+                   />
+
+        <Grid Grid.Column="0" Grid.Row="1">
+            <ContentControl Content="{Binding ConnectionList_v}"/>
+        </Grid>
+        
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox Grid.Column="0" Grid.Row="0" Margin="1"
+                 Text="{Binding HeaderCode, Mode=TwoWay}"/>
+
+            <Button Grid.Column="1" Grid.Row="0" Margin="1"
+                    Command="{Binding SendQueryCommand}"
+                    Content="가져오기"/>
+        </Grid>
+        
+        <TextBox Grid.Column="1" Grid.Row="1" Margin="1"
+                 AcceptsReturn="True"
+                 IsReadOnly="True"
+                 Text="{Binding ReceivedQuery, Mode=TwoWay}"/>
+    </Grid>
+</UserControl>
