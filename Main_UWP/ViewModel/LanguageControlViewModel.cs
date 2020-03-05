@@ -72,6 +72,12 @@ namespace Main_UWP.ViewModel
         {
             ApplyModel.TargetTitle = SelectedCanConnect.Title;
 
+            if (SelectedCanConnect.Password == null)
+            {
+                CommonFeature.Feature.ShowMessage("Password null");
+                return;
+            }
+
             var retData = RequestWebApi.Request.PostRequest("Language", ApplyModel);
 
             // 익명클래스로 된 JSON 데이터로 받아 컨버팅이 어려워 강제로 데이터 추출
@@ -84,7 +90,7 @@ namespace Main_UWP.ViewModel
         {
             try
             {
-                string result = RequestWebApi.Request.GetRequest("List");
+                string result = RequestWebApi.Request.GetRequest("Login");
                 CanConnectList = JsonConvert.DeserializeObject<ObservableCollection<ConnectionModel>>(result);
             }
             catch(Exception ex)

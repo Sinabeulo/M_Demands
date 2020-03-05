@@ -25,6 +25,10 @@ namespace WebApiService.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// 저장되어 있는 연결 목록
+        /// </summary>
+        /// <returns></returns>
         // GET: api/List
         [HttpGet]
         public IEnumerable<ConnectionModel> GetConnectionList()

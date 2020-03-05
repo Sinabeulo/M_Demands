@@ -1,4 +1,6 @@
-﻿namespace BizCommon_Std.Interface
+﻿using BizCommon_Std.Enums;
+
+namespace BizCommon_Std.Interface
 {
     /// <summary>
     /// 쿼리 필수요소
@@ -12,6 +14,6 @@
         /// <summary>
         /// 실행시키고자 하는 기능
         /// </summary>
-        string TargetFeature { get; set; }
+        Features TargetFeature { get; set; }
     }
 }

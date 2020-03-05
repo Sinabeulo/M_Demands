@@ -1,4 +1,5 @@
-﻿using BizCommon_Std.Interface;
+﻿using BizCommon_Std.Enums;
+using BizCommon_Std.Interface;
 using BizCommon_Std.MATR;
 using BizCommon_Std.RequestModel;
 using MATRBizModule;
@@ -34,9 +35,9 @@ namespace WebApiService.Controllers
             {
                 object result = null;
                 IFeatureExecute ret = null;
-                switch (item.TargetFeature.ToUpper())
+                switch (item.TargetFeature)
                 {
-                    case "ETC_CANCEL":
+                    case Features.ETC_CANCEL:
                         if (!(item.DataElement is MATR_ETCCancelModel model))
                             break;
                         ret = new MATR_ETCCancel(model);

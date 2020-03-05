@@ -1,0 +1,23 @@
+POQuery#select 'INSERT INTO tbl_PURCHASEORDER SELECT '''
++OrderGroupKey
++''','''+ISNULL(Company,'')
++''','''+ISNULL(OrderStatus,'')
++''','''+ISNULL(CONVERT(NVARCHAR(10),OrderDate),'')
++''','''+ISNULL(CONVERT(NVARCHAR(10),OrderSerialNo),'')
++''','''+ISNULL(CustomerCode,'')
++''','''+ISNULL(ProcessDepart,'')
++''','''+ISNULL(ProcessUser,'')
++''','''+ISNULL(ImportClass,'')
++''','''+ISNULL(OrderClass,'')
++''','''+ISNULL(Remark,'')
++''','''+ISNULL(BL,'')
++''','''+CONVERT(NVARCHAR(20),GETDATE())
++''','''+'ClientAdmin'
++''','''+'TestData'
++''','''+''
++''','''+''
++''','''+''
++''''
+from tbl_PURCHASEORDER where OrderGroupKey = '{paramCode}'
+
+BLQuery#asdas
