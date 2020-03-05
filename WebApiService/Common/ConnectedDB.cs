@@ -24,13 +24,18 @@ namespace WebApiService.Common
 
         private List<ConnectionModel> _connectedList;
 
-        public void SetConnection(ConnectionModel con)
+        public bool SetConnection(ConnectionModel con)
         {
             if(_connectedList == null)
             {
                 _connectedList = new List<ConnectionModel>();
             }
+
+            if (string.IsNullOrEmpty(con.Password))
+                return false;
+
             _connectedList.Add(con);
+            return true;
         }
 
         public ConnectionModel GetConnection(ConnectionModel con)
@@ -63,9 +68,12 @@ namespace WebApiService.Common
             {
                 return null;
             }
-            if (!_connectedList.Any(a => a.Title.Equals(title))) return null;
+            var connection = _connectedList.Single(a => a.Title.Equals(title));
 
-            return _connectedList.Single(s => s.Title.Equals(title));
+            if (connection != null && string.IsNullOrEmpty(connection.Password))
+                return null;
+
+            return connection;
         }
 
         public List<ConnectionModel> GetAllConnecions()

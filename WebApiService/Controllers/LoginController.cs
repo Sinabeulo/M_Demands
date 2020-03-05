@@ -27,14 +27,16 @@ namespace WebApiService.Controllers
         [HttpGet]
         public IEnumerable<ConnectionModel> GetConnections()
         {
-            return _context.Connections.Select(s => new ConnectionModel
-            {
-                DataSource = s.DataSource,
-                InitialCatalog = s.InitialCatalog,
-                Id = s.Id,
-                Title = s.Title,
-                UserID = s.UserID
-            });
+            return ConnectedDB.Instance.GetAllConnecions();
+
+            //return _context.Connections.Select(s => new ConnectionModel
+            //{
+            //    DataSource = s.DataSource,
+            //    InitialCatalog = s.InitialCatalog,
+            //    Id = s.Id,
+            //    Title = s.Title,
+            //    UserID = s.UserID
+            //});
         }
 
         // POST: api/Connections
@@ -55,7 +57,10 @@ namespace WebApiService.Controllers
 
             await _context.SaveChangesAsync();
 
-            ConnectedDB.Instance.SetConnection(conItem);
+            if(ConnectedDB.Instance.SetConnection(conItem) == false)
+            {
+                return BadRequest("연결실패");
+            }
 
             //SaveToFile();
 

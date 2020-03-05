@@ -32,6 +32,9 @@ namespace WebApiService
             
             services.AddDbContext<LanguageContext>(opt =>
                 opt.UseInMemoryDatabase("Language"));
+
+            services.AddDbContext<TestDataContext>(opt =>
+                opt.UseInMemoryDatabase("TestData"));
             services.AddMvc();
         }
 

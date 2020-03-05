@@ -28,6 +28,6 @@ namespace BizCommon_Std.Models
         /// <summary>
         /// 실행하고자하는 기능
         /// </summary>
-        public string TargetFeature { get; set; }
+        public Features TargetFeature { get; set; }
     }
 }

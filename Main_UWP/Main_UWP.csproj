@@ -120,20 +120,24 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ComboBinding.cs" />
-    <Compile Include="Enums\QueryRequirement.cs" />
-    <Compile Include="Enums\QueryResult.cs" />
+    <Compile Include="CommonUC\ConnectList.xaml.cs">
+      <DependentUpon>ConnectList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Enums\ResultStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\RequestWebApi.cs" />
+    <Compile Include="StaticCommonProperties.cs" />
     <Compile Include="ViewModel\CommonFeatureControlVIewModel.cs" />
     <Compile Include="ViewModel\DBManagerViewModel.cs" />
     <Compile Include="ViewModel\FileIOTestViewModel.cs" />
     <Compile Include="ViewModel\LanguageControlViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PO_BLMakerViewModel.cs" />
     <Compile Include="ViewModel\Test1_ViewModel.cs" />
+    <Compile Include="ViewModel\TestDataMakerViewModel.cs" />
     <Compile Include="View\CommonFeatureControlVIew.xaml.cs">
       <DependentUpon>CommonFeatureControlVIew.xaml</DependentUpon>
     </Compile>
@@ -149,8 +153,14 @@
     <Compile Include="View\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PO_BLMakerView.xaml.cs">
+      <DependentUpon>PO_BLMakerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Test1_View.xaml.cs">
       <DependentUpon>Test1_View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TestDataMakerView.xaml.cs">
+      <DependentUpon>TestDataMakerView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CommonUC\ConnectList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -199,9 +213,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\PO_BLMakerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Test1_View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TestDataMakerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

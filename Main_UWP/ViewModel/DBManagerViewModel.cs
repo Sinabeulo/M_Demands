@@ -150,7 +150,7 @@ namespace Main_UWP.ViewModel
                 CommonFeature.Feature.ShowMessage("선택된 항목이 없음");
                 return;
             }
-            if (SelectedConnection.Password == null || SelectedConnection.Password == string.Empty)
+            if (string.IsNullOrEmpty(SelectedConnection.Password))
             {
                 CommonFeature.Feature.ShowMessage("비밀번호 미입력");
                 return;
